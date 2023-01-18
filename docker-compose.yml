@@ -1,0 +1,32 @@
+version: "3"
+services:
+  db:
+    image: postgres:latest
+    container_name: db
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=dbc
+      - POSTGRES_PASSWORD=dbc
+      - POSTGRES_DB=stock
+
+  web-controller:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: web-controller
+    depends_on:
+      - db
+    volumes:
+      - ./:/usr/src
+    command: python backend.py
+    ports:
+      - "7777:7777"
+    environment:
+      - POSTGRES_USER=dbc
+      - POSTGRES_PASSWORD=dbc
+      - POSTGRES_DB=db
+    healthcheck:
+      interval: 10s
+      timeout: 20s
+      retries: 3
