@@ -4,9 +4,7 @@ FROM python:3.9
 WORKDIR /usr/src
 
 ## copy our application code
-COPY ./requirements.txt .
-COPY ./backend.py .
-
+COPY . .
 
 RUN apt-get update
 RUN pip install --upgrade pip

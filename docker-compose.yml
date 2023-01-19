@@ -13,11 +13,11 @@ services:
       timeout: 5s
       retries: 2
 
-  web-controller:
+  app:
     build:
       context: .
       dockerfile: ./Dockerfile
-    container_name: web-controller
+    container_name: app
     depends_on:
       db:
         condition: service_healthy

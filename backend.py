@@ -3,6 +3,7 @@ import os
 from flask import request, Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_utils import create_database, database_exists
+from sqlalchemy import ForeignKey
 
 url = "postgresql://" + os.environ["POSTGRES_USER"] + ":" + os.environ[
     "POSTGRES_PASSWORD"] + "@" + os.environ["POSTGRES_DB"] + "/stock"
@@ -19,15 +20,15 @@ db = SQLAlchemy(app)
 class Location(db.Model):
     __tablename__ = 'location'
     id = db.Column(db.Integer, primary_key=True)
-    location_name = db.Column(db.String(length=100))
+    location_name = db.Column(db.String(length=100), unique=True, nullable=False)
 
 
 class Stock(db.Model):
     __tablename__ = 'stock'
     id = db.Column(db.Integer, primary_key=True)
-    location_id = db.Column(db.String(length=50))
-    product_id = db.Column(db.String(length=50))
-    product_name = db.Column(db.String(length=100))
+    location_id = db.Column(db.Integer, ForeignKey(Location.id))
+    product_id = db.Column(db.String(length=50), unique=True, nullable=False)
+    product_name = db.Column(db.String(length=100), nullable=False)
     stock = db.Column(db.Integer)
 
 
