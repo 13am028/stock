@@ -1,4 +1,3 @@
-version: "3"
 services:
   db:
     image: postgres:latest
@@ -9,6 +8,10 @@ services:
       - POSTGRES_USER=dbc
       - POSTGRES_PASSWORD=dbc
       - POSTGRES_DB=stock
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      timeout: 5s
+      retries: 2
 
   web-controller:
     build:
@@ -16,7 +19,8 @@ services:
       dockerfile: ./Dockerfile
     container_name: web-controller
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - ./:/usr/src
     command: python backend.py

@@ -4,9 +4,9 @@ from flask import request, Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_utils import create_database, database_exists
 
-# url = "postgresql://" + os.environ["POSTGRES_USER"] + ":" + os.environ[
-#     "POSTGRES_PASSWORD"] + "@" + os.environ["POSTGRES_DB"] + "/stock"
-url = "postgresql://" + "dbc" ":" + "dbc" + "@" + "localhost:5434" + "/stock"
+url = "postgresql://" + os.environ["POSTGRES_USER"] + ":" + os.environ[
+    "POSTGRES_PASSWORD"] + "@" + os.environ["POSTGRES_DB"] + "/stock"
+# url = "postgresql://" + "dbc" ":" + "dbc" + "@" + "localhost:5434" + "/stock"
 if not database_exists(url):
     create_database(url)
 
