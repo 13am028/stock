@@ -46,21 +46,14 @@ def index():
     return render_template('base.html')
 
 
-@app.route('/location')
-def location():
+@app.route('/locations')
+def locations():
     all_locations = Locations.query.all()
     return render_template('location.html', locations=all_locations, len=len(all_locations))
 
 
-@app.route('/stock/<lid>', methods=['GET'])
-def stock(lid):
-    all_products = Products.query.all()
-    products = get_products(lid)
-    return render_template('stock.html', all_products=all_products, products=products, lid=lid, location=get_loc_name(lid))
-
-
-@app.route('/product', methods=['GET', 'POST'])
-def product():
+@app.route('/products', methods=['GET', 'POST'])
+def products():
     if request.method == 'POST':
         new_product = Products(product_name=request.form['product'])
         session.add(new_product)
@@ -74,7 +67,7 @@ def add_location():
         new_location = Locations(location_name=request.form["location"])
         session.add(new_location)
         session.commit()
-    return location()
+    return locations()
 
 
 @app.route('/add-product', methods=['GET', 'POST'])
@@ -87,8 +80,25 @@ def add_product():
     return stock(request.form["lid"])
 
 
+@app.route('/delete-product', methods=['POST'])
+def delete_product():
+    pid = request.form["pid"]
+    product = Products.query.filter(Products.id == pid).first()
+    session.delete(product)
+    session.commit()
+    return render_template('product.html', all_products=Products.query.all())
+
+
 def find(lid: str, pid: str):
     return Stock.query.filter(Stock.location_id == lid).filter(Stock.product_id == pid).first()
+
+
+@app.route('/stock/<lid>', methods=['GET'])
+def stock(lid):
+    all_products = Products.query.all()
+    products = get_products(lid)
+    return render_template('stock.html', all_products=all_products, products=products, lid=lid,
+                           location=get_loc_name(lid))
 
 
 @app.route('/increase', methods=['POST'])
@@ -109,8 +119,8 @@ def decrease_stock():
     return stock(lid)
 
 
-@app.route('/delete', methods=['POST'])
-def delete_product():
+@app.route('/delete-from-stock', methods=['POST'])
+def delete_from_stock():
     lid = request.form["lid"]
     product = find(lid, request.form["pid"])
     if product is not None:
@@ -139,12 +149,12 @@ def delete_loc():
     loc = Locations.query.filter(Locations.id == lid).first()
     session.delete(loc)
     session.commit()
-    return location()
+    return locations()
 
 
 def get_products(lid):
-    ret = Stock.query.filter(Stock.location_id == lid).all()
-    ret.sort(key=lambda x: x.product_id)
+    ret = session.query(Stock, Products).join(Products).filter(Stock.location_id == lid).all()
+    ret.sort(key=lambda x: x[1].product_name)
     return ret
 
 

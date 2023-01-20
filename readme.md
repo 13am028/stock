@@ -1,19 +1,18 @@
 # Vending Machine Tracking Application
 ### Running
-    # With Docker
-      docker compose up
-    - use url = os... in backend.py
-    - edit environment variables in docker-compose.yml
-    - everything configured for you
+#### With Docker
+    docker compose up
+- use url = os... in backend.py
+- edit environment variables in docker-compose.yml
+- everything configured for you
 
-    # Without Docker
-      python backend.py
-    - initiate database by yourself
-    - hardcode the database user & password
+#### Without Docker
+    python backend.py
+- initiate database by yourself
+- hardcode the database user & password
 
 ** Main branch has frontend built in **  
-To get simple version without UI
-git checkout 'simple'
+To get simple version without UI, checkout branch 'simple'
 
 ### Functions
 * Home Page

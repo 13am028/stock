@@ -3,15 +3,22 @@
 {% block content %}
 <div style="font-size: 20px; font-family: 'Apple Braille'">
     <div style="padding-left: 10px">
-        <form action="{{ url_for('product') }}" method="POST" style="display: inline-block">
+        <form action="{{ url_for('products') }}" method="POST" style="display: inline-block">
             <input type="text" name="product" placeholder="New Product Name">
             <input type="submit" name="confirm" value="Confirm" style="font-size: 30px">
         </form>
     </div>
-    <div style="padding: 10px">
+    <div style="display: grid; grid-template-columns: 25% 25% 25% 25%; color: white; font-family: 'Apple Braille'; row-gap: 10px">
         {% for product in all_products %}
-        <div>
-            <li style="padding: 10px">{{product.product_name}}</li>
+        <div style="width: fit-content; background-color: black;">
+            <img src="/static/samp.jpeg" style="width: 350px">
+            <div style="padding: 15px; color: white">
+                <h3>{{ product.product_name }}</h3>
+                <form action="{{ url_for('delete_product') }}" method="POST" style="display: inline-block;">
+                    <input type="text" name="pid" value="{{product.id}}" style="display: none">
+                    <input type="submit" name="delete" value="Delete" style="font-size: 30px">
+                </form>
+            </div>
         </div>
         {% endfor %}
     </div>
