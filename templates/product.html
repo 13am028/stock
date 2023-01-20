@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="font-size: 20px; font-family: 'Apple Braille'">
+    <div style="padding-left: 10px">
+        <form action="{{ url_for('product') }}" method="POST" style="display: inline-block">
+            <input type="text" name="product" placeholder="New Product Name">
+            <input type="submit" name="confirm" value="Confirm" style="font-size: 30px">
+        </form>
+    </div>
+    <div style="padding: 10px">
+        {% for product in all_products %}
+        <div>
+            <li style="padding: 10px">{{product.product_name}}</li>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

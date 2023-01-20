@@ -1,13 +1,13 @@
 import os
 
-from flask import request, Flask, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy_utils import create_database, database_exists
 from sqlalchemy import ForeignKey
+from sqlalchemy_utils import create_database, database_exists
 
-url = "postgresql://" + os.environ["POSTGRES_USER"] + ":" + os.environ[
-    "POSTGRES_PASSWORD"] + "@" + os.environ["POSTGRES_DB"] + "/stock"
-# url = "postgresql://" + "dbc" ":" + "dbc" + "@" + "localhost:5434" + "/stock"
+# url = "postgresql://" + os.environ["POSTGRES_USER"] + ":" + os.environ[
+#     "POSTGRES_PASSWORD"] + "@" + os.environ["POSTGRES_DB"] + "/stock"
+url = "postgresql://" + "dbc" ":" + "dbc" + "@" + "localhost:5434" + "/stock"
 if not database_exists(url):
     create_database(url)
 
@@ -17,18 +17,23 @@ app.config["SQLALCHEMY_DATABASE_URI"] = url
 db = SQLAlchemy(app)
 
 
-class Location(db.Model):
-    __tablename__ = 'location'
+class Locations(db.Model):
+    __tablename__ = 'locations'
     id = db.Column(db.Integer, primary_key=True)
     location_name = db.Column(db.String(length=100), unique=True, nullable=False)
+
+
+class Products(db.Model):
+    __tablename__ = 'products'
+    id = db.Column(db.Integer, primary_key=True)
+    product_name = db.Column(db.String(length=100), unique=True, nullable=False)
 
 
 class Stock(db.Model):
     __tablename__ = 'stock'
     id = db.Column(db.Integer, primary_key=True)
-    location_id = db.Column(db.Integer, ForeignKey(Location.id))
-    product_id = db.Column(db.String(length=50), unique=True, nullable=False)
-    product_name = db.Column(db.String(length=100), nullable=False)
+    location_id = db.Column(db.Integer, ForeignKey(Locations.id, ondelete='CASCADE'))
+    product_id = db.Column(db.Integer, ForeignKey(Products.id, ondelete='CASCADE'), unique=True)
     stock = db.Column(db.Integer)
 
 
@@ -38,42 +43,58 @@ session = db.session
 
 @app.route('/')
 def index():
-    all_locations = Location.query.all()
+    return render_template('base.html')
+
+
+@app.route('/location')
+def location():
+    all_locations = Locations.query.all()
     return render_template('location.html', locations=all_locations, len=len(all_locations))
 
 
 @app.route('/stock/<lid>', methods=['GET'])
 def stock(lid):
-    all_products = get_all_products(lid)
-    return render_template('stock.html', all_products=all_products, len=len(all_products), lid=lid, location=get_location(lid))
+    all_products = Products.query.all()
+    products = get_products(lid)
+    return render_template('stock.html', all_products=all_products, products=products, lid=lid, location=get_loc_name(lid))
+
+
+@app.route('/product', methods=['GET', 'POST'])
+def product():
+    if request.method == 'POST':
+        new_product = Products(product_name=request.form['product'])
+        session.add(new_product)
+        session.commit()
+    return render_template('product.html', all_products=Products.query.all())
 
 
 @app.route('/add-location', methods=['GET', 'POST'])
 def add_location():
     if request.method == 'POST':
-        new_location = Location(location_name=request.form["location"])
+        new_location = Locations(location_name=request.form["location"])
         session.add(new_location)
         session.commit()
-    return index()
+    return location()
 
 
 @app.route('/add-product', methods=['GET', 'POST'])
 def add_product():
     if request.method == 'POST':
-        new_product = Stock(location_id=request.form["lid"], product_id=request.form["pid"], product_name=request.form["name"], stock=request.form["stock"])
+        new_product = Stock(location_id=request.form["lid"], product_id=request.form["pid"],
+                            stock=request.form["stock"])
         session.add(new_product)
         session.commit()
     return stock(request.form["lid"])
 
 
 def find(lid: str, pid: str):
-    return Stock.query.filter(Stock.location_id==lid).filter(Stock.product_id==pid).first()
+    return Stock.query.filter(Stock.location_id == lid).filter(Stock.product_id == pid).first()
 
 
 @app.route('/increase', methods=['POST'])
 def increase_stock():
-    lid = request.form["location"]
-    product = find(lid, request.form["product"])
+    lid = request.form["lid"]
+    product = find(lid, request.form["pid"])
     product.stock += 1
     session.commit()
     return stock(lid)
@@ -81,8 +102,8 @@ def increase_stock():
 
 @app.route('/decrease', methods=['POST'])
 def decrease_stock():
-    lid = request.form["location"]
-    product = find(lid, request.form["product"])
+    lid = request.form["lid"]
+    product = find(lid, request.form["pid"])
     product.stock -= 1
     session.commit()
     return stock(lid)
@@ -90,8 +111,8 @@ def decrease_stock():
 
 @app.route('/delete', methods=['POST'])
 def delete_product():
-    lid = request.form["location"]
-    product = find(lid, request.form["product"])
+    lid = request.form["lid"]
+    product = find(lid, request.form["pid"])
     if product is not None:
         session.delete(product)
         session.commit()
@@ -100,14 +121,14 @@ def delete_product():
 
 @app.route('/edit-location/<lid>', methods=['GET'])
 def edit_location(lid):
-    location = Location.query.filter(Location.id==lid).first()
+    location = Locations.query.filter(Locations.id == lid).first()
     return render_template('edit-location.html', location=location)
 
 
 @app.route('/change_loc_name', methods=['POST'])
 def change_loc_name():
     lid = request.form["lid"]
-    Location.query.filter(Location.id==lid).first().location_name = request.form["location"]
+    Locations.query.filter(Locations.id == lid).first().location_name = request.form["location"]
     session.commit()
     return stock(lid)
 
@@ -115,20 +136,20 @@ def change_loc_name():
 @app.route('/delete_loc', methods=['POST'])
 def delete_loc():
     lid = request.form["lid"]
-    loc = Location.query.filter(Location.id==lid).first()
+    loc = Locations.query.filter(Locations.id == lid).first()
     session.delete(loc)
     session.commit()
-    return index()
+    return location()
 
 
-def get_all_products(lid):
-    ret = Stock.query.filter(Stock.location_id==lid).all()
-    ret.sort(key=lambda x: x.product_name)
+def get_products(lid):
+    ret = Stock.query.filter(Stock.location_id == lid).all()
+    ret.sort(key=lambda x: x.product_id)
     return ret
 
 
-def get_location(lid):
-    return Location.query.filter(Location.id==lid).first().location_name
+def get_loc_name(lid):
+    return Locations.query.filter(Locations.id == lid).first().location_name
 
 
 if __name__ == "__main__":

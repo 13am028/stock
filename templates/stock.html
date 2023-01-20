@@ -3,32 +3,35 @@
 {% block content %}
 <h2 style="font-family: 'Apple Braille'; color: #177199">Location: <a href="{{ url_for('edit_location', lid=lid) }}">{{ location }}</a></h2>
 <form action="{{ url_for('add_product') }}" method="POST" style="font-family: 'Apple Braille'; padding: 20px">
-    <input type="text" name="pid" placeholder="New Product ID">
-    <input type="text" name="name" placeholder="New Product Name">
-    <input type="text" name="stock" placeholder="Stock">
+    <select name="pid">
+        {% for product in all_products %}
+        <option value="{{ product.id }}" SELECTED>{{ product.product_name }}</option>
+        {% endfor %}
+    </select>
+    <input type="number" name="stock" placeholder="Stock">
     <input type="text" name="lid" value="{{lid}}" style="display: none">
     <input type="submit" name="confirm" value="Confirm">
 </form>
 <div style="display: grid; grid-template-columns: 25% 25% 25% 25%; color: white; font-family: 'Apple Braille'; row-gap: 10px">
-    {% for i in range(0, len) %}
+    {% for product in products %}
     <div style="width: fit-content; background-color: black;">
         <img src="/static/samp.jpeg" style="width: 350px">
         <div style="padding: 15px">
-            <h3>{{all_products[i].product_name}}</h3>
-            <h4>Stock: {{ all_products[i].stock }}</h4>
+            <h3>{{ product.product_name }}</h3>
+            <h4>Stock: {{ product.stock }}</h4>
             <form action="{{ url_for('increase_stock') }}" method="POST" style="display: inline-block">
-                <input type="text" name="product" value="{{all_products[i].product_id}}" style="display: none">
-                <input type="text" name="location" value="{{all_products[i].location_id}}" style="display: none">
+                <input type="text" name="pid" value="{{product.product_id}}" style="display: none">
+                <input type="text" name="lid" value="{{lid}}" style="display: none">
                 <input type="submit" name="increase" value="+" style="font-size: 30px">
             </form>
             <form action="{{ url_for('decrease_stock') }}" method="POST" style="display: inline-block">
-                <input type="text" name="product" value="{{all_products[i].product_id}}" style="display: none">
-                <input type="text" name="location" value="{{all_products[i].location_id}}" style="display: none">
+                <input type="text" name="pid" value="{{product.product_id}}" style="display: none">
+                <input type="text" name="lid" value="{{lid}}" style="display: none">
                 <input type="submit" name="decrease" value="-" style="font-size: 30px">
             </form>
             <form action="{{ url_for('delete_product') }}" method="POST" style="display: inline-block; position: relative; left: 60%">
-                <input type="text" name="product" value="{{all_products[i].product_id}}" style="display: none">
-                <input type="text" name="location" value="{{all_products[i].location_id}}" style="display: none">
+                <input type="text" name="pid" value="{{product.product_id}}" style="display: none">
+                <input type="text" name="lid" value="{{lid}}" style="display: none">
                 <input type="submit" name="delete" value="Delete" style="font-size: 30px">
             </form>
         </div>
