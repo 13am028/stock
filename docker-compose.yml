@@ -22,8 +22,8 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./:/usr/src
-    command: python backend.py
+      - ./src:/usr/src
+    command: python app.py
     ports:
       - "7777:7777"
     environment:

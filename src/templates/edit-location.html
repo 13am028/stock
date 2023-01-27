@@ -3,16 +3,16 @@
 {% block content %}
 <div style="font-size: 20px; font-family: 'Apple Braille'; color: #177199">
     <h3>Location: {{ location.location_name }}</h3>
-    <img src="/static/machine.jpeg" style="width: 200px">
-    <form action="{{ url_for('change_loc_name') }}" method="POST">
+    <img src="{{url_for('static', filename='machine.jpeg')}}" style="width: 200px">
+    <form action="{{ url_for('controller.change_loc_name') }}" method="POST">
         <input type="text" name="location" placeholder="New Location Name">
         <input type="text" name="lid" value="{{location.id}}" style="display: none">
         <input type="submit" name="confirm" value="Confirm" style="font-size: 30px">
     </form>
-    <form action="{{ url_for('stock', lid=location.id) }}" style="display: inline-block">
+    <form action="{{ url_for('controller.stock', lid=location.id) }}" style="display: inline-block">
         <input type="submit" name="discard" value="Discard Changes" style="font-size: 30px;">
     </form>
-    <form action="{{ url_for('delete_loc') }}" method="POST" style="display: inline-block">
+    <form action="{{ url_for('controller.delete_loc') }}" method="POST" style="display: inline-block">
         <input type="text" name="lid" value="{{location.id}}" style="display: none">
         <input type="submit" name="delete" value="Delete" style="font-size: 30px">
     </form>
