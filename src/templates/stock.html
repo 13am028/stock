@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2 style="font-family: 'Apple Braille'; color: #177199">Location: <a href="{{ url_for('controller.edit_location', lid=lid) }}">{{ location }}</a></h2>
-<form action="{{ url_for('controller.add_product') }}" method="POST" style="font-family: 'Apple Braille'; padding: 20px">
+<h2 style="font-family: 'Apple Braille'; color: #177199">Location: <a href="{{ url_for('web.edit_location', lid=lid) }}">{{ location }}</a></h2>
+<form action="{{ url_for('web.product_to_stock') }}" method="POST" style="font-family: 'Apple Braille'; padding: 20px">
     <select name="pid">
         {% for product in all_products %}
         <option value="{{ product.id }}" SELECTED>{{ product.product_name }}</option>
@@ -19,17 +19,17 @@
         <div style="padding: 15px">
             <h3>{{ product.product_name }}</h3>
             <h4>Stock: {{ stock.stock }}</h4>
-            <form action="{{ url_for('controller.increase_stock') }}" method="POST" style="display: inline-block">
+            <form action="{{ url_for('web.increase_stock') }}" method="POST" style="display: inline-block">
                 <input type="text" name="pid" value="{{product.id}}" style="display: none">
                 <input type="text" name="lid" value="{{lid}}" style="display: none">
                 <input type="submit" name="increase" value="+" style="font-size: 30px">
             </form>
-            <form action="{{ url_for('controller.decrease_stock') }}" method="POST" style="display: inline-block">
+            <form action="{{ url_for('web.decrease_stock') }}" method="POST" style="display: inline-block">
                 <input type="text" name="pid" value="{{product.id}}" style="display: none">
                 <input type="text" name="lid" value="{{lid}}" style="display: none">
                 <input type="submit" name="decrease" value="-" style="font-size: 30px">
             </form>
-            <form action="{{ url_for('controller.delete_from_stock') }}" method="POST" style="display: inline-block; position: relative; left: 60%">
+            <form action="{{ url_for('web.delete_from_stock') }}" method="POST" style="display: inline-block; position: relative; left: 60%">
                 <input type="text" name="pid" value="{{product.id}}" style="display: none">
                 <input type="text" name="lid" value="{{lid}}" style="display: none">
                 <input type="submit" name="delete" value="Delete" style="font-size: 30px">

@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 from sqlalchemy_utils import create_database, database_exists
-from app_controller import controller
+from web import web
 from db import db
 
 url = "postgresql://" + os.environ["POSTGRES_USER"] + ":" + os.environ[
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
         db.session.commit()
-    app.register_blueprint(controller)
+    app.register_blueprint(web)
     from waitress import serve
 
     serve(app, host="0.0.0.0", port=7777)
