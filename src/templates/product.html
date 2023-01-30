@@ -3,7 +3,7 @@
 {% block content %}
 <div style="font-size: 20px; font-family: 'Apple Braille'">
     <div style="padding-left: 10px">
-        <form action="{{ url_for('web.add_product') }}" method="POST" style="display: inline-block">
+        <form action="{{ url_for('product.add_product') }}" method="POST" style="display: inline-block">
             <input type="text" name="product" placeholder="New Product Name">
             <input type="submit" name="confirm" value="Confirm" style="font-size: 30px">
         </form>
@@ -14,7 +14,7 @@
             <img src="{{url_for('static', filename='samp.jpeg')}}" style="width: 350px">
             <div style="padding: 15px; color: white">
                 <h3>{{ product.product_name }}</h3>
-                <form action="{{ url_for('web.delete_product') }}" method="POST" style="display: inline-block;">
+                <form action="{{ url_for('product.delete_product') }}" method="DELETE" style="display: inline-block;">
                     <input type="text" name="pid" value="{{product.id}}" style="display: none">
                     <input type="submit" name="delete" value="Delete" style="font-size: 30px">
                 </form>
