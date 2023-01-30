@@ -1,4 +1,6 @@
 # Vending Machine Tracking Application
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=13am028_stock&metric=coverage)](https://sonarcloud.io/summary/new_code?id=13am028_stock)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=13am028_stock&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=13am028_stock)
 ### Running
 #### With Docker
     docker compose up
@@ -11,7 +13,7 @@
 - initiate database by yourself
 - hardcode the database user & password
 
-** Main branch has frontend built in **  
+** Main branch has frontend built in **
 To get simple version without UI, checkout branch 'simple'
 
 ### Functions

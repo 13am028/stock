@@ -4,7 +4,8 @@ FROM python:3.9
 WORKDIR /usr/src
 
 ## copy our application code
-COPY . .
+COPY src .
+COPY requirements.txt .
 
 RUN apt-get update
 RUN pip install --upgrade pip
@@ -13,6 +14,6 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Assign execution permissions
-RUN chmod +x backend.py
+RUN chmod +x app.py
 
-CMD [ "python", "./backend.py" ]
+CMD [ "python", "./app.py" ]
