@@ -15,7 +15,7 @@ def add_product() -> Response:
     return redirect(url_for("page.products"))
 
 
-@product.route("/delete-product", methods=["DELETE"])
+@product.route("/delete-product", methods=["POST"])
 def delete_product() -> Response:
     """Delete product."""
     pid: str = request.form["pid"]

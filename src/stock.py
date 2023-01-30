@@ -23,7 +23,7 @@ def product_to_stock() -> Response:
     return redirect(url_for(stock_page, lid=lid))
 
 
-@stock.route("/increase", methods=["PUT"])
+@stock.route("/increase", methods=["POST"])
 def increase_stock() -> Response:
     """Increase stock of a product then redirect."""
     lid: str = request.form["lid"]
@@ -35,7 +35,7 @@ def increase_stock() -> Response:
     return redirect(url_for(stock_page, lid=lid))
 
 
-@stock.route("/decrease", methods=["PUT"])
+@stock.route("/decrease", methods=["POST"])
 def decrease_stock() -> Response:
     """Decrease stock of product then redirect."""
     lid: str = request.form["lid"]
@@ -48,7 +48,7 @@ def decrease_stock() -> Response:
     return redirect(url_for(stock_page, lid=lid))
 
 
-@stock.route("/delete-from-stock", methods=["DELETE"])
+@stock.route("/delete-from-stock", methods=["POST"])
 def delete_from_stock() -> Response:
     """Delete product from current location stock then redirect."""
     lid: str = request.form["lid"]
