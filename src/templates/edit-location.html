@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div style="font-size: 20px; font-family: 'Apple Braille'; color: #177199">
+<div style="font-size: 20px; font-family: 'Apple Braille', sans-serif; color: #177199">
     <h3>Location: {{ location.location_name }}</h3>
-    <img src="{{url_for('static', filename='machine.jpeg')}}" style="width: 200px">
+    <img src="{{url_for('static', filename='machine.jpeg')}}" alt="vending machine" style="width: 200px">
     <form action="{{ url_for('location.change_loc_name') }}" method="PUT">
         <input type="text" name="location" placeholder="New Location Name">
         <input type="text" name="lid" value="{{location.id}}" style="display: none">

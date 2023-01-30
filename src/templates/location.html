@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div style="font-size: 20px; font-family: 'Apple Braille'">
+<div style="font-size: 20px; font-family: 'Apple Braille', sans-serif">
     <div style="padding-left: 10px">
         <form action="{{ url_for('location.add_location') }}" method="POST" style="display: inline-block">
             <input type="text" name="location" placeholder="New Location Name">
@@ -11,7 +11,9 @@
     <div style="padding: 10px">
         {% for i in range(0, len) %}
         <div>
-            <li style="padding: 10px"><a href="{{ url_for('page.stock', lid=locations[i].id) }}">{{locations[i].location_name}}</a></li>
+            <ul>
+                <li style="padding: 10px"><a href="{{ url_for('page.stock', lid=locations[i].id) }}">{{locations[i].location_name}}</a></li>
+            </ul>
         </div>
         {% endfor %}
     </div>

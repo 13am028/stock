@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2 style="font-family: 'Apple Braille'; color: #177199">Location: <a href="{{ url_for('page.edit_location', lid=lid) }}">{{ location }}</a></h2>
-<form action="{{ url_for('stock.product_to_stock') }}" method="POST" style="font-family: 'Apple Braille'; padding: 20px">
+<h2 style="font-family: 'Apple Braille', sans-serif; color: #177199">Location: <a href="{{ url_for('page.edit_location', lid=lid) }}">{{ location }}</a></h2>
+<form action="{{ url_for('stock.product_to_stock') }}" method="POST" style="font-family: 'Apple Braille', sans-serif; padding: 20px">
     <select name="pid">
         {% for product in all_products %}
         <option value="{{ product.id }}" SELECTED>{{ product.product_name }}</option>
@@ -12,10 +12,10 @@
     <input type="text" name="lid" value="{{lid}}" style="display: none">
     <input type="submit" name="confirm" value="Confirm">
 </form>
-<div style="display: grid; grid-template-columns: 25% 25% 25% 25%; color: white; font-family: 'Apple Braille'; row-gap: 10px">
+<div style="display: grid; grid-template-columns: 25% 25% 25% 25%; color: white; font-family: 'Apple Braille', sans-serif; row-gap: 10px">
     {% for stock, product in products %}
     <div style="width: fit-content; background-color: black;">
-        <img src="{{url_for('static', filename='samp.jpeg')}}" style="width: 350px">
+        <img src="{{url_for('static', filename='samp.jpeg')}}" alt="Rick Ashley" style="width: 350px">
         <div style="padding: 15px">
             <h3>{{ product.product_name }}</h3>
             <h4>Stock: {{ stock.stock }}</h4>
