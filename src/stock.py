@@ -8,6 +8,8 @@ from utils import find
 stock = Blueprint("stock", __name__)
 stock_page = "page.stock"
 
+product_not_found = {'message': 'Product Not Found !'}
+
 
 @stock.route("/product-to-stock", methods=["POST"])
 def product_to_stock() -> Response:
@@ -17,7 +19,7 @@ def product_to_stock() -> Response:
     stock_num: str = request.form["stock"]
     new_stock: Stock = Stock(location_id=lid, product_id=pid, stock=stock_num)
     if int(request.form["stock"]) < 0:
-        return make_response("Product Not Found !")
+        return make_response({'message': 'Stock Cannot Be Negative !'})
     session.add(new_stock)
     session.commit()
     return redirect(url_for(stock_page, lid=lid))
@@ -29,7 +31,7 @@ def increase_stock() -> Response:
     lid: str = request.form["lid"]
     product: Products = find(lid, request.form["pid"])
     if product is None:
-        return make_response("Product Not Found !")
+        return make_response(product_not_found)
     product.stock += 1
     session.commit()
     return redirect(url_for(stock_page, lid=lid))
@@ -41,7 +43,7 @@ def decrease_stock() -> Response:
     lid: str = request.form["lid"]
     product: Products = find(lid, request.form["pid"])
     if product is None:
-        return make_response("Product Not Found !")
+        return make_response(product_not_found)
     if product.stock > 0:
         product.stock -= 1
         session.commit()
@@ -54,7 +56,7 @@ def delete_from_stock() -> Response:
     lid: str = request.form["lid"]
     product: Products = find(lid, request.form["pid"])
     if product is None:
-        return make_response("Product Not Found !")
+        return make_response(product_not_found)
     session.delete(product)
     session.commit()
     return redirect(url_for(stock_page, lid=lid))
