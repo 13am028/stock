@@ -12,17 +12,15 @@ from pages import page
 from product import product
 from stock import stock
 
-# url = (
-#     "postgresql://"
-#     + os.environ["POSTGRES_USER"]
-#     + ":"
-#     + os.environ["POSTGRES_PASSWORD"]
-#     + "@"
-#     + os.environ["POSTGRES_DB"]
-#     + "/stock"
-# )
-
-url = "postgresql://" + "dbc" ":" + "dbc" + "@" + "localhost:5434" + "/stock"
+url = (
+    "postgresql://"
+    + os.environ["POSTGRES_USER"]
+    + ":"
+    + os.environ["POSTGRES_PASSWORD"]
+    + "@"
+    + os.environ["POSTGRES_DB"]
+    + "/stock"
+)
 
 
 """Create database tables if not exist."""

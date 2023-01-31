@@ -1,6 +1,5 @@
 """Route and methods for stock."""
-from flask import (Blueprint, Response, make_response, redirect, request,
-                   url_for)
+from flask import Blueprint, Response, make_response, redirect, request, url_for
 
 from db import Products, Stock, session
 from utils import find
@@ -8,7 +7,7 @@ from utils import find
 stock = Blueprint("stock", __name__)
 stock_page = "page.stock"
 
-product_not_found = {'message': 'Product Not Found !'}
+product_not_found = {"message": "Product Not Found !"}
 
 
 @stock.route("/product-to-stock", methods=["POST"])
@@ -19,7 +18,7 @@ def product_to_stock() -> Response:
     stock_num: str = request.form["stock"]
     new_stock: Stock = Stock(location_id=lid, product_id=pid, stock=stock_num)
     if int(request.form["stock"]) < 0:
-        return make_response({'message': 'Stock Cannot Be Negative !'})
+        return make_response({"message": "Stock Cannot Be Negative !"})
     session.add(new_stock)
     session.commit()
     return redirect(url_for(stock_page, lid=lid))

@@ -20,7 +20,9 @@ def add_location() -> Response:
 def change_loc_name() -> Response:
     """Change location name and redirect to /stock."""
     lid: str = request.form["lid"]
-    Locations.query.filter(Locations.id == lid).first().location_name = request.form["location"]
+    Locations.query.filter(Locations.id == lid).first().location_name = request.form[
+        "location"
+    ]
     session.commit()
     return redirect(url_for("page.stock", lid=lid))
 
