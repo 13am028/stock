@@ -14,9 +14,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: dbc
           POSTGRES_PASSWORD: dbc
-          POSTGRES_DB: stock
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -31,6 +29,8 @@ jobs:
         run: node client.js
         env:
           POSTGRES_HOST: postgres
+          POSTGRES_USER: dbc
+          POSTGRES_DB: stock
           POSTGRES_PORT: 5434
   lint:
     runs-on: ubuntu-20.04
