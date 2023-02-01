@@ -1,4 +1,4 @@
-import random
+import secrets
 import string
 
 from bs4 import BeautifulSoup
@@ -7,12 +7,11 @@ from app import app
 
 location_uri = "/locations"
 parser = "html.parser"
-random.seed(5555)
 
 
 def get_random_string(length: int) -> str:
     """Get a random string."""
-    result_str = "".join(random.choice(string.ascii_letters) for _ in range(length))
+    result_str = "".join(secrets.choice(string.ascii_letters) for _ in range(length))
     return result_str
 
 
