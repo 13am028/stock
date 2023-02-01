@@ -4,8 +4,8 @@ from flask.json import tag
 from app import app
 
 product_not_found = "Product Not Found !"
-stock_uri = '/stock/'
-parser = 'html.parser'
+stock_uri = "/stock/"
+parser = "html.parser"
 
 
 def get_lid() -> str:
@@ -26,16 +26,18 @@ def get_pid() -> str:
 
 
 def get_stock(lid: str, pid: str) -> int:
+    """Get current stock of a product."""
     html_page = app.test_client().get(stock_uri + lid).data
     soup = BeautifulSoup(html_page, parser)
-    stock = soup.find('div', {'id': pid}).find('h4').getText().split()[-1]
+    stock = soup.find("div", {"id": pid}).find("h4").getText().split()[-1]
     return int(stock)
 
 
 def get_product(lid: str, pid: str) -> tag:
+    """Check if product exist."""
     html_page = app.test_client().get(stock_uri + lid).data
     soup = BeautifulSoup(html_page, parser)
-    return soup.find('div', {'id': pid})
+    return soup.find("div", {"id": pid})
 
 
 def test_product_to_stock():
@@ -48,9 +50,7 @@ def test_product_to_stock():
     )
     assert res_success.status_code == 302
     assert get_product(lid, pid) is not None
-    res_fail = app.test_client().post(
-        uri, data={"lid": -1, "pid": -1, "stock": -1}
-    )
+    res_fail = app.test_client().post(uri, data={"lid": -1, "pid": -1, "stock": -1})
     assert res_fail.json["message"] == "Stock Cannot Be Negative !"
     res_duplicate = app.test_client().post(
         uri, data={"lid": lid, "pid": pid, "stock": 100}
@@ -91,4 +91,3 @@ def test_delete_from_stock():
     assert get_product(lid, pid) is None
     res = app.test_client().post("/delete-from-stock", data={"lid": -1, "pid": -1})
     assert res.json["message"] == product_not_found
-

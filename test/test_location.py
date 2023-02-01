@@ -20,7 +20,7 @@ def get_lid() -> str:
     html_page = app.test_client().get(location_uri).data
     soup = BeautifulSoup(html_page, parser)
     line = soup.find("li").find("a").get("href")
-    lid = line[line.rfind("/") + 1:]
+    lid = line[line.rfind("/") + 1 :]
     return lid
 
 
@@ -41,7 +41,7 @@ def test_change_loc_name() -> None:
     app.test_client().post("/change-loc-name", data={"lid": lid, "location": rand_name})
     html_page = app.test_client().get("/edit-location/" + lid).data
     soup = BeautifulSoup(html_page, parser)
-    loc_name = soup.find('h3').getText().split()[-1]
+    loc_name = soup.find("h3").getText().split()[-1]
     assert rand_name == loc_name
 
 
@@ -51,4 +51,4 @@ def test_delete_loc() -> None:
     app.test_client().post("/delete-loc", data={"lid": lid})
     html_page = app.test_client().get(location_uri).data
     soup = BeautifulSoup(html_page, parser)
-    assert soup.find('a', {"id": lid}) is None
+    assert soup.find("a", {"id": lid}) is None
