@@ -1,4 +1,5 @@
 # Vending Machine Tracking Application
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=13am028_stock&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=13am028_stock)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=13am028_stock&metric=coverage)](https://sonarcloud.io/summary/new_code?id=13am028_stock)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=13am028_stock&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=13am028_stock)
 ### Running
