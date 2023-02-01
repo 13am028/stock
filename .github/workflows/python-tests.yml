@@ -26,17 +26,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Install Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: "14.x"
-      - name: Connect to PostgreSQL
-        run: node client.js
-        env:
-          POSTGRES_HOST: postgres
-          POSTGRES_USER: dbc
-          POSTGRES_DB: stock
-          POSTGRES_PORT: 5434
   lint:
     runs-on: ubuntu-20.04
 
