@@ -15,9 +15,6 @@ jobs:
         image: postgres
         env:
           POSTGRES_PASSWORD: dbc
-          POSTGRES_USER: dbc
-          POSTGRES_DB: stock
-          POSTGRES_PORT: 5434
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -27,7 +24,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Connect to PostgreSQL
         run: node client.js
         env:
