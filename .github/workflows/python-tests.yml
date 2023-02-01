@@ -7,25 +7,6 @@ env:
   POETRY_VERSION: "1.2.0"
 
 jobs:
-  database:
-    runs-on: ubuntu-latest
-    container: node:10.18-jessie
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: dbc
-          POSTGRES_USER: dbc
-          POSTGRES_DB: stock
-          POSTGRES_PORT: 5434
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
   lint:
     runs-on: ubuntu-20.04
 
@@ -58,8 +39,20 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
   test-and-coverage:
-    needs: [database]
     runs-on: ubuntu-20.04
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: dbc
+          POSTGRES_USER: dbc
+          POSTGRES_DB: stock
+          POSTGRES_PORT: 5434
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v2
