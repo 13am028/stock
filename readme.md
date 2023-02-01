@@ -28,6 +28,7 @@ To get simple version without UI, checkout branch 'simple'
   * delete a product
 * Stock Page
   * List all products in the vending machine given location
+  * Add a product from all products list
   * Click ${location_name} to go to Edit Location Page.
   * Increase / Decrease stock
   * Delete s product from the vending machine
