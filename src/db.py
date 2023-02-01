@@ -34,8 +34,3 @@ class Stock(db.Model):
 
 
 session = db.session
-new_location: Locations = Locations(location_name='test_location')
-session.add(new_location)
-new_product: Products = Products(product_name='test_product')
-session.add(new_product)
-session.commit()
