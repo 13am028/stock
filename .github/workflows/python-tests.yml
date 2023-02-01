@@ -7,7 +7,7 @@ env:
   POETRY_VERSION: "1.2.0"
 
 jobs:
-  container-job:
+  database:
     runs-on: ubuntu-latest
     container: node:10.18-jessie
     services:
@@ -67,6 +67,7 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
   test-and-coverage:
+    needs: [database]
     runs-on: ubuntu-20.04
 
     steps:
@@ -101,9 +102,9 @@ jobs:
         run: |
           poetry run pytest
         env:
-          - POSTGRES_USER: dbc
-          - POSTGRES_PASSWORD: dbc
-          - POSTGRES_DB: postgres
+          POSTGRES_USER: dbc
+          POSTGRES_PASSWORD: dbc
+          POSTGRES_DB: postgres
 
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v2
