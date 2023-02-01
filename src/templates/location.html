@@ -9,13 +9,11 @@
         </form>
     </div>
     <div style="padding: 10px">
+        <ul>
         {% for i in range(0, len) %}
-        <div>
-            <ul>
-                <li style="padding: 10px"><a href="{{ url_for('page.stock', lid=locations[i].id) }}">{{locations[i].location_name}}</a></li>
-            </ul>
-        </div>
+            <li style="padding: 10px"><a href="{{ url_for('page.stock', lid=locations[i].id) }}" data-test-id="loc-name">{{locations[i].location_name}}</a></li>
         {% endfor %}
+        </ul>
     </div>
 </div>
 

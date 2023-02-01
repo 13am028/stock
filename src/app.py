@@ -6,7 +6,7 @@ from flask import Flask
 from sqlalchemy_utils import create_database, database_exists
 from waitress import serve
 
-from db import db
+from db import Locations, Products, db
 from location import location
 from pages import page
 from product import product
@@ -23,45 +23,34 @@ url = (
 )
 
 
-def create_db() -> None:
-    """Create database tables if not exist."""
-    if not database_exists(url):
-        create_database(url)
+"""Create database tables if not exist."""
+if not database_exists(url):
+    create_database(url)
 
 
-def create_app() -> flask.app.Flask:
-    """Create Flask app."""
-    app: flask.app.Flask = Flask(__name__)
-    app.app_context().push()
-    app.config["SQLALCHEMY_DATABASE_URI"] = url
-    return app
+"""Create Flask app."""
+app: flask.app.Flask = Flask(__name__)
+app.app_context().push()
+app.config["SQLALCHEMY_DATABASE_URI"] = url
 
 
-def init_app_db(app: flask.app.Flask) -> None:
-    """Initiate database to app."""
-    db.init_app(app)
-    with app.app_context():
-        db.create_all()
-        db.session.commit()
+"""Initiate database to app."""
+db.init_app(app)
+with app.app_context():
+    db.create_all()
+    new_location: Locations = Locations(location_name="test_location")
+    db.session.add(new_location)
+    new_product: Products = Products(product_name="test_product")
+    db.session.add(new_product)
+    db.session.commit()
 
 
-def register_blueprint(app: flask.app.Flask) -> None:
-    """Register blueprints to app."""
-    app.register_blueprint(page)
-    app.register_blueprint(location)
-    app.register_blueprint(product)
-    app.register_blueprint(stock)
-
-
-def serve_app(app: flask.app.Flask) -> None:
-    """Serve the app using waitress."""
-    serve(app, host="0.0.0.0", port=7777)
+"""Register blueprints to app."""
+app.register_blueprint(page)
+app.register_blueprint(location)
+app.register_blueprint(product)
+app.register_blueprint(stock)
 
 
 if __name__ == "__main__":
-    create_db()
-    app: flask.app.Flask = create_app()
-    print(type(app))
-    init_app_db(app)
-    register_blueprint(app)
-    serve_app(app)
+    serve(app, host="0.0.0.0", port=7778)
