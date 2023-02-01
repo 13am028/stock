@@ -1,4 +1,6 @@
 """Route and methods for stock."""
+from typing import List
+
 from flask import Blueprint, Response, make_response, redirect, request, url_for
 
 from db import Products, Stock, session
@@ -19,6 +21,11 @@ def product_to_stock() -> Response:
     new_stock: Stock = Stock(location_id=lid, product_id=pid, stock=stock_num)
     if int(request.form["stock"]) < 0:
         return make_response({"message": "Stock Cannot Be Negative !"})
+    products_in_stock: List[Stock] = Stock.query.filter(Stock.location_id == lid).all()
+    for product in products_in_stock:
+        if pid == str(product.product_id):
+            product.stock = stock_num
+            return redirect(url_for(stock_page, lid=lid))
     session.add(new_stock)
     session.commit()
     return redirect(url_for(stock_page, lid=lid))

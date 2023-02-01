@@ -42,7 +42,4 @@ def test_delete_product() -> None:
     app.test_client().post("/delete-product", data={"pid": pid})
     html_page = app.test_client().get(product_uri).data
     soup = BeautifulSoup(html_page, parser)
-    products = []
-    for product_id in soup.findAll("input", {"name": "pid"}):
-        products.append(product_id.get("value"))
-    assert pid not in products
+    assert soup.find('h3', {'id': pid}) is None

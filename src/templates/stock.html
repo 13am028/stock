@@ -16,7 +16,7 @@
     {% for stock, product in products %}
     <div style="width: fit-content; background-color: black;">
         <img src="{{url_for('static', filename='samp.jpeg')}}" alt="Rick Ashley" style="width: 350px">
-        <div style="padding: 15px">
+        <div style="padding: 15px" id="{{product.id}}">
             <h3>{{ product.product_name }}</h3>
             <h4>Stock: {{ stock.stock }}</h4>
             <form action="{{ url_for('stock.increase_stock') }}" method="POST" style="display: inline-block">

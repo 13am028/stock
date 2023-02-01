@@ -3,6 +3,7 @@ import os
 
 import flask.app
 from flask import Flask
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy_utils import create_database, database_exists
 from waitress import serve
 
@@ -38,11 +39,13 @@ app.config["SQLALCHEMY_DATABASE_URI"] = url
 db.init_app(app)
 with app.app_context():
     db.create_all()
-    new_location: Locations = Locations(location_name="test_location")
-    db.session.add(new_location)
-    new_product: Products = Products(product_name="test_product")
-    db.session.add(new_product)
     db.session.commit()
+    try:
+        db.session.add(Locations(location_name="test_location"))
+        db.session.add(Products(product_name="test_product"))
+        db.session.commit()
+    except SQLAlchemyError:
+        pass
 
 
 """Register blueprints to app."""
