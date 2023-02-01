@@ -7,6 +7,7 @@ from app import app
 
 product_uri = "/products"
 parser = "html.parser"
+random.seed(5555)
 
 
 def get_random_string(length: int) -> str:

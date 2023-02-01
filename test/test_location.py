@@ -7,6 +7,7 @@ from app import app
 
 location_uri = "/locations"
 parser = "html.parser"
+random.seed(5555)
 
 
 def get_random_string(length: int) -> str:
