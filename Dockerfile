@@ -1,6 +1,8 @@
 # start from base
 FROM python:3.9
 
+RUN adduser -D worker
+USER worker
 WORKDIR /usr/src
 
 ## copy our application code
