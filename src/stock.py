@@ -25,6 +25,7 @@ def product_to_stock() -> Response:
     for product in products_in_stock:
         if pid == str(product.product_id):
             product.stock = stock_num
+            session.commit()
             return redirect(url_for(stock_page, lid=lid))
     session.add(new_stock)
     session.commit()
