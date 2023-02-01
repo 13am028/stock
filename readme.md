@@ -4,7 +4,6 @@
 ### Running
 #### With Docker
     docker compose up
-- use url = os... in backend.py
 - edit environment variables in docker-compose.yml
 - everything configured for you
 
@@ -25,6 +24,7 @@ To get simple version without UI, checkout branch 'simple'
 * Product Page
   * see all products
   * add a new product
+  * delete a product
 * Stock Page
   * List all products in the vending machine given location
   * Click ${location_name} to go to Edit Location Page.
