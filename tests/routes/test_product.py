@@ -1,9 +1,9 @@
+import json
 import secrets
 import string
 
-from bs4 import BeautifulSoup
-
 from app import app
+from model.products_utils import get_all_products
 
 product_uri = "/products"
 parser = "html.parser"
@@ -17,29 +17,27 @@ def get_random_string(length: int) -> str:
 
 def get_pid() -> str:
     """Get the first product_id found."""
-    html_page = app.test_client().get(product_uri).data
-    soup = BeautifulSoup(html_page, parser)
-    pid = soup.find("input", {"name": "pid"}).get("value")
+    pid = get_all_products()[0].id
     return pid
 
 
 def test_add_product() -> None:
     """Test adding a new product."""
     product_name = get_random_string(7)
-    app.test_client().post("/add-product", data={"product": product_name})
-
-    html_page = app.test_client().get(product_uri).data
-    soup = BeautifulSoup(html_page, parser)
-    products = []
-    for name in soup.findAll("h3"):
-        products.append(name.getText())
-    assert product_name in products
+    app.test_client().post(
+        "/add-product",
+        data=json.dumps({"product": product_name}),
+        content_type="application/json",
+    )
+    assert product_name in [product.product_name for product in get_all_products()]
 
 
 def test_delete_product() -> None:
     """Test deleting product."""
     pid = get_pid()
-    app.test_client().post("/delete-product", data={"pid": pid})
-    html_page = app.test_client().get(product_uri).data
-    soup = BeautifulSoup(html_page, parser)
-    assert soup.find("h3", {"id": pid}) is None
+    app.test_client().post(
+        "/delete-product",
+        data=json.dumps({"pid": pid}),
+        content_type="application/json",
+    )
+    assert pid not in [product.id for product in get_all_products()]

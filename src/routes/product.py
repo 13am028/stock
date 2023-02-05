@@ -9,7 +9,7 @@ product = Blueprint("product", __name__)
 @product.route("/add-product", methods=["POST"])
 def add_product() -> Response:
     """Add a new product."""
-    product_name = request.form["product"]
+    product_name = request.json["product"]
     products_utils.add_product(product_name)
     return redirect(url_for("page.products"))
 
@@ -17,6 +17,6 @@ def add_product() -> Response:
 @product.route("/delete-product", methods=["POST"])
 def delete_product() -> Response:
     """Delete product."""
-    pid: str = request.form["pid"]
+    pid: str = request.json["pid"]
     products_utils.delete_product(pid)
     return redirect(url_for("page.products"))

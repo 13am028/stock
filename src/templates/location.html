@@ -3,7 +3,7 @@
 {% block content %}
 <div style="font-size: 20px; font-family: 'Apple Braille', sans-serif">
     <div style="padding-left: 10px">
-        <form action="{{ url_for('location.add_location') }}" method="POST" style="display: inline-block">
+        <form onsubmit="addLocation()" style="display: inline-block">
             <input type="text" name="location" placeholder="New Location Name">
             <input type="submit" name="confirm" value="Confirm" style="font-size: 30px">
         </form>
@@ -16,5 +16,13 @@
         </ul>
     </div>
 </div>
+
+<script>
+    async function addLocation() {
+        await axios.post('/add-location', {location: document.getElementsByName('location')[0].value})
+        await new Promise(r => setTimeout(r, 200));
+        location.reload(true)
+    }
+</script>
 
 {% endblock %}

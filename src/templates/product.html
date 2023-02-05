@@ -3,7 +3,7 @@
 {% block content %}
 <div style="font-size: 20px; font-family: 'Apple Braille', sans-serif">
     <div style="padding-left: 10px">
-        <form action="{{ url_for('product.add_product') }}" method="POST" style="display: inline-block">
+        <form onsubmit="addProduct()" style="display: inline-block">
             <input type="text" name="product" placeholder="New Product Name">
             <input type="submit" name="confirm" value="Confirm" style="font-size: 30px">
         </form>
@@ -13,15 +13,24 @@
         <div style="width: fit-content; background-color: black;">
             <img src="{{url_for('static', filename='samp.jpeg')}}" alt="Rick Ashley" style="width: 350px">
             <div style="padding: 15px; color: white">
-                <h3 id="{{product.id}}">{{ product.product_name }}</h3>
-                <form action="{{ url_for('product.delete_product') }}" method="POST" style="display: inline-block;">
-                    <input type="text" name="pid" value="{{product.id}}" style="display: none">
-                    <input type="submit" name="delete" value="Delete" style="font-size: 30px">
-                </form>
+                <h3 class="{{product.id}}">{{ product.product_name }}</h3>
+                <button onclick="deleteProduct(this)" id="{{product.id}}">Delete</button>
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
+
+<script>
+    async function addProduct() {
+        await axios.post('/add-product', {product: document.getElementsByName('product')[0].value})
+    }
+
+    async function deleteProduct(self) {
+        await axios.post('/delete-product', {pid: self.id})
+        await new Promise(r => setTimeout(r, 200));
+        location.reload(true)
+    }
+</script>
 
 {% endblock %}

@@ -3,19 +3,27 @@
 {% block content %}
 <div style="font-size: 20px; font-family: 'Apple Braille', sans-serif; color: #177199">
     <h3>Location: {{ location.location_name }}</h3>
+    <p id="{{location.id}}" style="display: none"></p>
     <img src="{{url_for('static', filename='machine.jpeg')}}" alt="vending machine" style="width: 200px">
-    <form action="{{ url_for('location.change_loc_name') }}" method="POST">
+    <form onsubmit="changeName()">
         <input type="text" name="location" placeholder="New Location Name">
-        <input type="text" name="lid" value="{{location.id}}" style="display: none">
         <input type="submit" name="confirm" value="Confirm" style="font-size: 30px">
     </form>
-    <form action="{{ url_for('page.stock', lid=location.id) }}" style="display: inline-block">
-        <input type="submit" name="discard" value="Discard Changes" style="font-size: 30px;">
-    </form>
-    <form action="{{ url_for('location.delete_loc') }}" method="POST" style="display: inline-block">
-        <input type="text" name="lid" value="{{location.id}}" style="display: none">
-        <input type="submit" name="delete" value="Delete" style="font-size: 30px">
-    </form>
+    <button><a href="{{url_for('page.stock', lid=location.id)}}">Go Back</a></button>
+    <button onclick="deleteLocation()">Delete</button>
 </div>
+
+<script>
+    const lid = document.getElementsByTagName('p')[0].id
+    async function changeName() {
+        await axios.post('/change-loc-name', {lid: lid, location: document.getElementsByName('location')[0].value})
+    }
+
+    async function deleteLocation() {
+        await axios.post('/delete-product', {lid: lid})
+        await new Promise(r => setTimeout(r, 200));
+        location.reload(true)
+    }
+</script>
 
 {% endblock %}

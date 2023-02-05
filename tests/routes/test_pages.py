@@ -1,14 +1,10 @@
-from bs4 import BeautifulSoup
-
 from app import app
+from model.locations_utils import get_all_locations
 
 
 def get_lid() -> str:
     """Get the first location_id found."""
-    html_page = app.test_client().get("/locations").data
-    soup = BeautifulSoup(html_page, "html.parser")
-    line = soup.find("li").find("a").get("href")
-    lid = line[line.rfind("/") + 1 :]
+    lid = str(get_all_locations()[0].id)
     return lid
 
 
