@@ -1,8 +1,10 @@
 """Database."""
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
+from sqlalchemy.exc import SQLAlchemyError
 
 db = SQLAlchemy()
+session = db.session
 
 
 class Locations(db.Model):
@@ -33,4 +35,10 @@ class Stock(db.Model):
     stock = db.Column(db.Integer)
 
 
-session = db.session
+def session_commit() -> str:
+    """Try session.commit(), return Success/Database Failure."""
+    try:
+        session.commit()
+    except SQLAlchemyError:
+        return "Database Failure"
+    return "Success"

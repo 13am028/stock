@@ -7,11 +7,12 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy_utils import create_database, database_exists
 from waitress import serve
 
-from db import Locations, Products, db
-from location import location
-from pages import page
-from product import product
-from stock import stock
+from model import locations_utils, products_utils, stock_utils
+from model.model import db
+from routes.location import location
+from routes.pages import page
+from routes.product import product
+from routes.stock import stock
 
 url = (
     "postgresql://"
@@ -41,9 +42,9 @@ with app.app_context():
     db.create_all()
     db.session.commit()
     try:
-        db.session.add(Locations(location_name="test_location"))
-        db.session.add(Products(product_name="test_product"))
-        db.session.commit()
+        locations_utils.add_loc("test location")
+        products_utils.add_product("test product")
+        stock_utils.product_to_stock("1", "1", "1")
     except SQLAlchemyError:
         pass
 
