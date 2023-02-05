@@ -1,11 +1,14 @@
-from app import app
 from model.locations_utils import get_all_locations
 from model.model import Stock
 from model.products_utils import get_all_products
-from model.stock_utils import decrease_stock, delete_stock, increase_stock, product_to_stock
+from model.stock_utils import (
+    decrease_stock,
+    delete_stock,
+    increase_stock,
+    product_to_stock,
+)
 
-with app.app_context():
-    pass
+product_not_found = "Product Not Found !"
 
 
 def test_product_to_stock():
@@ -18,16 +21,16 @@ def test_product_to_stock():
 
 def test_increase_stock():
     """Test increasing product stock."""
-    assert increase_stock("-1", "-1") == "Product Not Found !"
+    assert increase_stock("-1", "-1") == product_not_found
 
 
 def test_decrease_stock():
     """Test decreasing product stock."""
-    assert decrease_stock("-1", "-1") == "Product Not Found !"
+    assert decrease_stock("-1", "-1") == product_not_found
     stock = Stock.query.first()
     assert decrease_stock(stock.location_id, stock.product_id) == "Success"
 
 
 def test_delete_stock():
     """Test deleting product from location."""
-    assert delete_stock("-1", "-1") == "Product Not Found !"
+    assert delete_stock("-1", "-1") == product_not_found
