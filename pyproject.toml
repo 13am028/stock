@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "stock"
+name = "src"
 version = "0.1.0"
 description = ""
 authors = ["13am028 <71486982+13am028@users.noreply.github.com>"]
