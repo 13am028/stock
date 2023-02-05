@@ -1,7 +1,12 @@
 from model.locations_utils import get_all_locations
 from model.model import Stock
 from model.products_utils import get_all_products
-from model.stock_utils import decrease_stock, delete_stock, increase_stock, product_to_stock
+from model.stock_utils import (
+    decrease_stock,
+    delete_stock,
+    increase_stock,
+    product_to_stock,
+)
 
 product_not_found = "Product Not Found !"
 
