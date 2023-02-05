@@ -42,8 +42,8 @@ with app.app_context():
     db.create_all()
     db.session.commit()
     try:
-        locations_utils.add_loc("test location")
-        products_utils.add_product("test product")
+        locations_utils.add_loc("tests location")
+        products_utils.add_product("tests product")
         stock_utils.product_to_stock("1", "1", "1")
     except SQLAlchemyError:
         pass

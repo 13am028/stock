@@ -99,7 +99,7 @@ jobs:
           retention-days: 7
 
   build-and-upload:
-    needs: [ test-and-coverage ]
+    needs: [ tests-and-coverage ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-20.04
     steps:
@@ -140,8 +140,8 @@ jobs:
           if-no-files-found: error
 
   sonarqube:
-    # runs after test-and-coverage job
-    needs: test-and-coverage
+    # runs after tests-and-coverage job
+    needs: tests-and-coverage
     runs-on: ubuntu-20.04
 
     steps:

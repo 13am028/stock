@@ -17,7 +17,7 @@ def get_random_string(length: int) -> str:
 
 def test_get_loc_name() -> None:
     """Test getting location name."""
-    assert get_loc_name("1") == "test location"
+    assert get_loc_name("1") == "tests location"
 
 
 def test_get_location() -> None:
@@ -35,7 +35,7 @@ def test_add_loc():
     """Test adding location."""
     location_name = get_random_string(7)
     assert add_loc(location_name) == success
-    assert add_loc("test location") == failure
+    assert add_loc("tests location") == failure
 
 
 def test_delete_loc():
