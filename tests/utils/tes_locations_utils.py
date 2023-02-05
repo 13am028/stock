@@ -1,15 +1,7 @@
 import secrets
 import string
-from typing import List
 
-from model.locations_utils import (
-    add_loc,
-    change_loc_name,
-    delete_loc,
-    get_all_locations,
-    get_loc_name,
-    get_location,
-)
+from model.locations_utils import *
 from model.model import Locations
 
 success = "Success"
