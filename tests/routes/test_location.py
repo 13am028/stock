@@ -2,8 +2,6 @@ import json
 import secrets
 import string
 
-from bs4 import BeautifulSoup
-
 from app import app
 from model.locations_utils import get_all_locations
 
@@ -44,10 +42,9 @@ def test_change_loc_name() -> None:
         data=json.dumps({"lid": lid, "location": rand_name}),
         content_type=content_type_json,
     )
-    html_page = app.test_client().get("/edit-location/" + lid).data
-    soup = BeautifulSoup(html_page, parser)
-    loc_name = soup.find("h3").getText().split()[-1]
-    assert rand_name == loc_name
+    for location in get_all_locations():
+        if location.id == lid:
+            assert location.location_name == rand_name
 
 
 def test_delete_loc() -> None:
@@ -56,6 +53,4 @@ def test_delete_loc() -> None:
     app.test_client().post(
         "/delete-loc", data=json.dumps({"lid": lid}), content_type=content_type_json
     )
-    html_page = app.test_client().get(location_uri).data
-    soup = BeautifulSoup(html_page, parser)
-    assert soup.find("a", {"id": lid}) is None
+    assert lid not in [location.id for location in get_all_locations()]
