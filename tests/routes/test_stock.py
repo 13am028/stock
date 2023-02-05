@@ -24,14 +24,6 @@ def get_pid() -> str:
     return pid
 
 
-def get_stock(lid: str, pid: str) -> int:
-    """Get current stock of a product."""
-    html_page = app.test_client().get(stock_uri + lid).data
-    soup = BeautifulSoup(html_page, parser)
-    stock = soup.find("div", {"id": pid}).find("h4").getText().split()[-1]
-    return int(stock)
-
-
 def test_product_to_stock():
     """Test adding product to stock."""
     uri = "/product-to-stock"
