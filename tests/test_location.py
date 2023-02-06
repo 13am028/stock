@@ -43,7 +43,7 @@ def test_change_loc_name() -> None:
         content_type=content_type_json,
     )
     for location in get_all_locations():
-        if location.id == lid:
+        if str(location.id) == lid:
             assert location.location_name == rand_name
 
 

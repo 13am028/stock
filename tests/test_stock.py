@@ -1,4 +1,7 @@
 import json
+from typing import Any, List
+
+import pytest
 
 from app import app
 from model.locations_utils import get_all_locations
@@ -19,7 +22,7 @@ def get_lid() -> str:
 
 def get_pid() -> str:
     """Get the first product_id found."""
-    pid = get_all_products()[0].id
+    pid = str(get_all_products()[0].id)
     return pid
 
 
@@ -33,6 +36,15 @@ def get_stock(lid: str, pid: str) -> int:
     )
 
 
+def get_stock_product(lid: str) -> List[Any]:
+    return (
+        session.query(Stock, Products)
+        .join(Products)
+        .filter(Stock.location_id == lid)
+        .all()
+    )
+
+
 def test_product_to_stock():
     """Test adding product to stock."""
     uri = "/product-to-stock"
@@ -43,15 +55,20 @@ def test_product_to_stock():
         data=json.dumps({"lid": lid, "pid": pid, "stock": 0}),
         content_type=content_type_json,
     )
-    products = (
-        session.query(Stock, Products)
-        .join(Products)
-        .filter(Stock.location_id == lid)
-        .all()
+    products = get_stock_product(lid)
+    assert int(pid) in [product.id for stock, product in products]
+    app.test_client().post(
+        uri,
+        data=json.dumps({"lid": lid, "pid": pid, "stock": 10}),
+        content_type=content_type_json,
     )
-    assert pid in [product.id for stock, product in products]
+    products = get_stock_product(lid)
+    for stock, product in products:
+        if str(product.id) == pid:
+            assert stock.stock == 10
 
 
+@pytest.mark.first
 def test_increase_stock():
     """Test increasing stock."""
     lid = get_lid()
@@ -66,6 +83,7 @@ def test_increase_stock():
     assert stock + 1 == new_stock
 
 
+@pytest.mark.second
 def test_decrease_stock():
     """Test decreasing stock."""
     lid = get_lid()

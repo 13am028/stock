@@ -15,7 +15,7 @@ def find_product(lid: str, pid: str) -> Stock:
 
 
 def product_to_stock(lid: str, pid: str, stock_num: str) -> str:
-    """Add product to stock. If it already exist, change the number of stock."""
+    """Add product to stock. If it already exists, change the number of stock."""
     new_stock: Stock = Stock(location_id=lid, product_id=pid, stock=stock_num)
     if int(stock_num) < 0:
         return "Stock Cannot Be Negative !"
