@@ -20,7 +20,7 @@
             <h4>Stock: {{ stock.stock }}</h4>
             <button onclick="increaseStock(this)" class="{{product.id}}">+</button>
             <button onclick="decreaseStock(this)" class="{{product.id}}">-</button>
-            <button onclick="deleteProductk(this)" class="{{product.id}}">Delete</button>
+            <button onclick="deleteProduct(this)" class="{{product.id}}">Delete</button>
         </div>
     </div>
     {% endfor %}
@@ -38,19 +38,19 @@
     }
 
     async function increaseStock(self) {
-        await axios.post('/stock/increase', {location_id: location_id, product_id: self.className})
+        await axios.put('/stock/increase-stock', {location_id: location_id, product_id: self.className})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }
 
     async function decreaseStock(self) {
-        await axios.post('/stock/decrease', {location_id: location_id, product_id: self.className})
+        await axios.put('/stock/decrease-stock', {location_id: location_id, product_id: self.className})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }
 
-    async function deleteProductk(self) {
-        await axios.post('/stock/delete-product-from-stock', {lid: lid, pid: self.className})
+    async function deleteProduct(self) {
+        await axios.delete('/stock/delete-product-from-stock', {data: {location_id: location_id, product_id: self.className}})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }

@@ -34,6 +34,7 @@ class LocationService:
         """Delete location given location id."""
         location: Locations = LocationService.get_location(location_id)
         session.delete(location)
+        session.commit()
         return location
 
     @classmethod

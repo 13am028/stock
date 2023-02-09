@@ -16,6 +16,10 @@ class Locations(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     location_name = db.Column(db.String(length=100), unique=True, nullable=False)
 
+    def to_dict(self) -> Dict:
+        """Convert Locations to Dict."""
+        return {"id": self.id, "location_name": self.location_name}
+
 
 class Products(db.Model):
     """Product Model."""
@@ -24,6 +28,10 @@ class Products(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product_name = db.Column(db.String(length=100), unique=True, nullable=False)
 
+    def to_dict(self) -> Dict:
+        """Convert Products to Dict."""
+        return {"id": self.id, "product_name": self.product_name}
+
 
 class Stock(db.Model):
     """Stock Model."""
@@ -31,10 +39,17 @@ class Stock(db.Model):
     __tablename__ = "stock"
     id = db.Column(db.Integer, primary_key=True)
     location_id = db.Column(db.Integer, ForeignKey(Locations.id, ondelete="CASCADE"))
-    product_id = db.Column(
-        db.Integer, ForeignKey(Products.id, ondelete="CASCADE"), unique=True
-    )
+    product_id = db.Column(db.Integer, ForeignKey(Products.id, ondelete="CASCADE"))
     stock = db.Column(db.Integer)
+
+    def to_dict(self) -> Dict:
+        """Convert Stock to Dict."""
+        return {
+            "id": self.id,
+            "location_id": self.location_id,
+            "product_id": self.product_id,
+            "stock": self.stock,
+        }
 
 
 class StockTimeline(db.Model):
