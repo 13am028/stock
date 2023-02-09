@@ -3,7 +3,7 @@
 {% block content %}
 <div style="font-size: 20px; font-family: 'Apple Braille', sans-serif">
     <div style="padding-left: 10px">
-        <form onsubmit="addProduct()" style="display: inline-block">
+        <form onsubmit="addProduct();return false" style="display: inline-block">
             <input type="text" name="product" placeholder="New Product Name">
             <input type="submit" name="confirm" value="Confirm" style="font-size: 30px">
         </form>
@@ -23,11 +23,13 @@
 
 <script>
     async function addProduct() {
-        await axios.post('/add-product', {product: document.getElementsByName('product')[0].value})
+        await axios.post('/product/add-product', {product_name: document.getElementsByName('product')[0].value})
+        await new Promise(r => setTimeout(r, 200));
+        location.reload(true)
     }
 
     async function deleteProduct(self) {
-        await axios.post('/delete-product', {pid: self.id})
+        await axios.post('/product/delete-product', {product_id: self.id})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }

@@ -3,7 +3,7 @@
 {% block content %}
 <div style="font-size: 20px; font-family: 'Apple Braille', sans-serif">
     <div style="padding-left: 10px">
-        <form onsubmit="addLocation()" style="display: inline-block">
+        <form onsubmit="addLocation();return false" style="display: inline-block">
             <input type="text" name="location" placeholder="New Location Name">
             <input type="submit" name="confirm" value="Confirm" style="font-size: 30px">
         </form>
@@ -11,7 +11,7 @@
     <div style="padding: 10px">
         <ul>
         {% for i in range(0, len) %}
-            <li style="padding: 10px"><a href="{{ url_for('page.stock', lid=locations[i].id) }}" id="{{locations[i].id}}">{{locations[i].location_name}}</a></li>
+            <li style="padding: 10px"><a href="{{ url_for('page.stock', location_id=locations[i].id) }}" id="{{locations[i].id}}">{{locations[i].location_name}}</a></li>
         {% endfor %}
         </ul>
     </div>
@@ -19,7 +19,7 @@
 
 <script>
     async function addLocation() {
-        await axios.post('/add-location', {location: document.getElementsByName('location')[0].value})
+        await axios.post('/location/add-location', {location_name: document.getElementsByName('location')[0].value})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }
