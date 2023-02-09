@@ -1,10 +1,11 @@
 """Database."""
+import datetime
+from typing import Dict
+
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import ForeignKey
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import DateTime, ForeignKey
 
 db = SQLAlchemy()
-session = db.session
 
 
 class Locations(db.Model):
@@ -35,10 +36,26 @@ class Stock(db.Model):
     stock = db.Column(db.Integer)
 
 
-def session_commit() -> str:
-    """Try session.commit(), return Success/Database Failure."""
-    try:
-        session.commit()
-    except SQLAlchemyError:
-        return "Database Failure"
-    return "Success"
+class StockTimeline(db.Model):
+    """Stock Timeline Model."""
+
+    __tablename__ = "timeline"
+    id = db.Column(db.Integer, primary_key=True)
+    location_id = db.Column(db.Integer, ForeignKey(Locations.id, ondelete="CASCADE"))
+    product_id = db.Column(db.Integer, ForeignKey(Products.id, ondelete="CASCADE"))
+    stock = db.Column(db.Integer)
+    date = db.Column(DateTime, default=datetime.datetime.utcnow)
+
+    def to_dict(self) -> Dict:
+        """Return dict of timeline."""
+        return {
+            "id": self.id,
+            "location_name": Locations.query.filter(Locations.id == self.location_id)
+            .first()
+            .location_name,
+            "product_name": Products.query.filter(Products.id == self.product_id)
+            .first()
+            .product_name,
+            "stock": self.stock,
+            "time": str(self.date),
+        }

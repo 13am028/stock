@@ -1,10 +1,10 @@
 from app import app
-from model.locations_utils import get_all_locations
+from model.locations_service import LocationService
 
 
 def get_lid() -> str:
     """Get the first location_id found."""
-    lid = str(get_all_locations()[0].id)
+    lid = str(LocationService.get_all_locations()[0].id)
     return lid
 
 

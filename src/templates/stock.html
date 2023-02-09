@@ -2,8 +2,8 @@
 
 {% block content %}
 <p id="lid" style="display: none">{{lid}}</p>
-<h2 style="font-family: 'Apple Braille', sans-serif; color: #177199">Location: <a href="{{ url_for('page.edit_location', lid=lid) }}">{{ location }}</a></h2>
-<form onsubmit="addProduct()" style="font-family: 'Apple Braille', sans-serif; padding: 20px">
+<h2 style="font-family: 'Apple Braille', sans-serif; color: #177199">Location: <a href="{{ url_for('page.edit_location', location_id=lid) }}">{{ location }}</a></h2>
+<form onsubmit="addProduct();return false" style="font-family: 'Apple Braille', sans-serif; padding: 20px">
     <select name="pid">
         {% for product in all_products %}
         <option value="{{ product.id }}" SELECTED>{{ product.product_name }}</option>
@@ -33,23 +33,25 @@
     async function addProduct() {
         const pid = document.getElementsByName('pid')[0].value
         const stock = document.getElementsByName('stock')[0].value
-        await axios.post('/product-to-stock', {lid: lid, pid: pid, stock: stock})
+        await axios.post('/stock/add-product-to-stock', {lid: lid, pid: pid, stock: stock})
+        await new Promise(r => setTimeout(r, 200));
+        location.reload(true)
     }
 
     async function increaseStock(self) {
-        await axios.post('/increase', {lid: lid, pid: self.className})
+        await axios.post('/stock/increase', {lid: lid, pid: self.className})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }
 
     async function decreaseStock(self) {
-        await axios.post('/decrease', {lid: lid, pid: self.className})
+        await axios.post('/stock/decrease', {lid: lid, pid: self.className})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }
 
     async function deleteProductk(self) {
-        await axios.post('/delete-from-stock', {lid: lid, pid: self.className})
+        await axios.post('/stock/delete-product-from-stock', {lid: lid, pid: self.className})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }

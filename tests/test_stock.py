@@ -1,12 +1,9 @@
 import json
 from typing import Any, List
 
-import pytest
-
 from app import app
-from model.locations_utils import get_all_locations
-from model.model import Products, Stock, session
-from model.products_utils import get_all_products
+from model.locations_service import LocationService
+from model.model import Products, Stock, db
 
 product_not_found = "Product Not Found !"
 stock_uri = "/stock/"
@@ -16,19 +13,19 @@ content_type_json = "application/json"
 
 def get_lid() -> str:
     """Get the first location_id found."""
-    lid = str(get_all_locations()[0].id)
+    lid = str(LocationService.get_all_locations()[0].id)
     return lid
 
 
 def get_pid() -> str:
     """Get the first product_id found."""
-    pid = str(get_all_products()[0].id)
+    pid = str(LocationService.get_all_products()[0].id)
     return pid
 
 
 def get_stock(lid: str, pid: str) -> int:
     return (
-        session.query(Stock, Products)
+        db.session.query(Stock, Products)
         .join(Products)
         .filter(Stock.location_id == lid and Products.id == pid)
         .first()[0]
@@ -38,7 +35,7 @@ def get_stock(lid: str, pid: str) -> int:
 
 def get_stock_product(lid: str) -> List[Any]:
     return (
-        session.query(Stock, Products)
+        db.session.query(Stock, Products)
         .join(Products)
         .filter(Stock.location_id == lid)
         .all()
@@ -68,7 +65,6 @@ def test_product_to_stock():
             assert stock.stock == 10
 
 
-@pytest.mark.first
 def test_increase_stock():
     """Test increasing stock."""
     lid = get_lid()
@@ -83,7 +79,6 @@ def test_increase_stock():
     assert stock + 1 == new_stock
 
 
-@pytest.mark.second
 def test_decrease_stock():
     """Test decreasing stock."""
     lid = get_lid()
@@ -108,7 +103,7 @@ def test_delete_from_stock():
         content_type=content_type_json,
     )
     assert (
-        session.query(Stock, Products)
+        db.session.query(Stock, Products)
         .join(Products)
         .filter(Stock.location_id == lid and Products.id == pid)
         .first()

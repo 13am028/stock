@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<select name="lid" onchange="loadTableDataByLocation()">
+    {% for location in locations %}
+    <option value="{{ location.id }}">{{ location.location_name }}</option>
+    {% endfor %}
+</select>
+<table id="location-table">
+    <thead>
+    <tr>
+        <th>time</th>
+        <th>product</th>
+        <th>stock</th>
+    </tr>
+    </thead>
+    <tbody id="location-table-body"></tbody>
+</table>
+
+<select name="pid" onchange="loadTableDataByProduct()">
+    {% for product in products %}
+    <option value="{{ product.id }}">{{ product.product_name }}</option>
+    {% endfor %}
+</select>
+<table id="product-table">
+    <thead>
+    <tr>
+        <th>time</th>
+        <th>location</th>
+        <th>stock</th>
+    </tr>
+    </thead>
+    <tbody id="product-table-body"></tbody>
+</table>
+<script>
+    async function loadTableDataByLocation() {
+        const table = document.getElementById("location-table-body");
+        table.innerHTML = ''
+        const lid = document.getElementsByName('lid')[0].value
+        let timeline = []
+        await axios.post("/stock-timeline/timeline-by-location", {lid: lid}).then((response) => {
+            timeline = response.data.timeline
+        })
+        timeline.forEach(item => {
+            let row = table.insertRow();
+            let time = row.insertCell(0);
+            time.innerHTML = item.time;
+            let product = row.insertCell(1);
+            product.innerHTML = item.product_name;
+            let stock = row.insertCell(2);
+            stock.innerHTML = item.stock;
+        });
+    }
+
+    async function loadTableDataByProduct() {
+        const table = document.getElementById("product-table-body");
+        table.innerHTML = ''
+        const pid = document.getElementsByName('pid')[0].value
+        let timeline = []
+        await axios.post("/stock-timeline/timeline-by-product", {pid: pid}).then((response) => {
+            timeline = response.data.timeline
+        })
+        timeline.forEach(item => {
+            let row = table.insertRow();
+            let time = row.insertCell(0);
+            time.innerHTML = item.time;
+            let location = row.insertCell(1);
+            location.innerHTML = item.location_name;
+            let stock = row.insertCell(2);
+            stock.innerHTML = item.stock;
+        });
+    }
+
+    loadTableDataByLocation(document.getElementsByName('lid')[0].value)
+    loadTableDataByProduct(document.getElementsByName('pid')[0].value)
+</script>
+
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>
+{% endblock %}

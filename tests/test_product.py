@@ -3,7 +3,8 @@ import secrets
 import string
 
 from app import app
-from model.products_utils import get_all_products
+from model.model import Stock, StockTimeline
+from model.products_service import ProductService
 
 product_uri = "/products"
 parser = "html.parser"
@@ -17,7 +18,7 @@ def get_random_string(length: int) -> str:
 
 def get_pid() -> str:
     """Get the first product_id found."""
-    pid = get_all_products()[0].id
+    pid = ProductService.get_all_products()[0].id
     return pid
 
 
@@ -29,7 +30,9 @@ def test_add_product() -> None:
         data=json.dumps({"product": product_name}),
         content_type="application/json",
     )
-    assert product_name in [product.product_name for product in get_all_products()]
+    assert product_name in [
+        product.product_name for product in ProductService.get_all_products()
+    ]
 
 
 def test_delete_product() -> None:
@@ -40,4 +43,9 @@ def test_delete_product() -> None:
         data=json.dumps({"pid": pid}),
         content_type="application/json",
     )
-    assert pid not in [product.id for product in get_all_products()]
+    if pid in [stock.product_id for stock in Stock.query.all()] or pid in [
+        timeline.product_id for timeline in StockTimeline.query.all()
+    ]:
+        assert pid in [product.id for product in ProductService.get_all_products()]
+    else:
+        assert pid not in [product.id for product in ProductService.get_all_products()]
