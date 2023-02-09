@@ -24,7 +24,9 @@ def change_location_name() -> Response:
     """Change location name and redirect to /stock."""
     location_id: int = request.json["location_id"]
     location_name: str = request.json["location_name"]
-    ret: Dict = LocationService.change_location_name(location_id, location_name).to_dict()
+    ret: Dict = LocationService.change_location_name(
+        location_id, location_name
+    ).to_dict()
     return make_response(ret, 200)
 
 

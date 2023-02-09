@@ -1,6 +1,6 @@
 from typing import List
 
-from flask import Blueprint, Response, make_response, request, jsonify
+from flask import Blueprint, Response, jsonify, make_response, request
 
 import html_methods
 from model.model import StockTimeline

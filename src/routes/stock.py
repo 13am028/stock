@@ -19,7 +19,9 @@ def product_to_stock() -> Response:
     location_id: int = request.json["location_id"]
     product_id: int = request.json["product_id"]
     stock_num: int = request.json["stock"]
-    ret: Dict = StockService.add_product_to_stock(location_id, product_id, stock_num).to_dict()
+    ret: Dict = StockService.add_product_to_stock(
+        location_id, product_id, stock_num
+    ).to_dict()
     return make_response({"message": ret}, 200)
 
 
