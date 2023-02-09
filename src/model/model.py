@@ -16,6 +16,12 @@ class Locations(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     location_name = db.Column(db.String(length=100), unique=True, nullable=False)
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'location_name': self.location_name
+        }
+
 
 class Products(db.Model):
     """Product Model."""
@@ -23,6 +29,12 @@ class Products(db.Model):
     __tablename__ = "products"
     id = db.Column(db.Integer, primary_key=True)
     product_name = db.Column(db.String(length=100), unique=True, nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'product_name': self.product_name
+        }
 
 
 class Stock(db.Model):
@@ -35,6 +47,14 @@ class Stock(db.Model):
         db.Integer, ForeignKey(Products.id, ondelete="CASCADE"), unique=True
     )
     stock = db.Column(db.Integer)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'location_id': self.location_id,
+            'product_id': self.product_id,
+            'stock': self.stock
+        }
 
 
 class StockTimeline(db.Model):

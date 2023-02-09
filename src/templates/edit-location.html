@@ -15,13 +15,13 @@
 <script>
     const location_id = '{{location.id}}'
     async function changeName() {
-        await axios.post('/location/change-location-name', {location_id: location_id, location_name: document.getElementsByName('location')[0].value})
+        await axios.put('/location/change-location-name', {location_id: location_id, location_name: document.getElementsByName('location')[0].value})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }
 
     async function deleteLocation() {
-        await axios.post('/location/delete-location', {location_id: location_id})
+        await axios.delete('/location/delete-location', {data: {location_id: location_id}})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }

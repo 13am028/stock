@@ -1,5 +1,7 @@
 from typing import Any, List
 
+from sqlalchemy.exc import IntegrityError
+
 from model.model import Products, Stock, session
 from model.timeline_service import TimelineService
 
@@ -23,20 +25,18 @@ class StockService:
         cls, location_id: int, product_id: int, stock: int
     ) -> Stock:
         """Add product to stock. If it already exists, change the number of stock."""
+        TimelineService.add_to_timeline(location_id, product_id, stock)
         new_stock: Stock = Stock(
             location_id=location_id, product_id=product_id, stock=stock
         )
-        products_in_stock: List[Stock] = Stock.query.filter(
-            Stock.location_id == location_id
-        ).all()
-        TimelineService.add_to_timeline(location_id, product_id, stock)
-        for product in products_in_stock:
-            if product_id == product.product_id:
-                product.stock = stock
-                session.commit()
-                return product
-        session.add(new_stock)
-        session.commit()
+        try:
+            session.add(new_stock)
+            session.commit()
+        except IntegrityError:
+            product = StockService.find_stock(location_id, product_id)
+            product.stock = stock
+            session.commit()
+            return product
         return new_stock
 
     @classmethod

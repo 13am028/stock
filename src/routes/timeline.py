@@ -1,6 +1,6 @@
 from typing import List
 
-from flask import Blueprint, Response, make_response, request
+from flask import Blueprint, Response, make_response, request, jsonify
 
 import html_methods
 from model.model import StockTimeline
@@ -18,7 +18,7 @@ def timeline_by_lid() -> Response:
         location_id
     )
     ret = [stock.to_dict() for stock in lid_timeline]
-    return make_response({"timeline": ret}, 200)
+    return make_response(jsonify(ret), 200)
 
 
 @timeline.route(GET_TIMELINE_BY_PRODUCT, methods=[html_methods.POST])
@@ -29,4 +29,4 @@ def timeline_by_pid() -> Response:
         product_id
     )
     ret = [stock.to_dict() for stock in pid_timeline]
-    return make_response({"timeline": ret}, 200)
+    return make_response(jsonify(ret), 200)

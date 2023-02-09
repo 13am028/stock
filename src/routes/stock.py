@@ -1,4 +1,6 @@
 """Route and methods for stock."""
+from typing import Dict
+
 from flask import Blueprint, Response, make_response, request
 
 import html_methods
@@ -17,7 +19,7 @@ def product_to_stock() -> Response:
     location_id: int = request.json["location_id"]
     product_id: int = request.json["product_id"]
     stock_num: int = request.json["stock"]
-    ret: str = StockService.add_product_to_stock(location_id, product_id, stock_num)
+    ret: Dict = StockService.add_product_to_stock(location_id, product_id, stock_num).to_dict()
     return make_response({"message": ret}, 200)
 
 
@@ -26,7 +28,7 @@ def increase_stock() -> Response:
     """Increase stock of a product then redirect."""
     location_id: int = request.json["location_id"]
     product_id: int = request.json["product_id"]
-    ret: str = StockService.increase_stock(location_id, product_id)
+    ret: Dict = StockService.increase_stock(location_id, product_id).to_dict()
     return make_response({"message": ret}, 200)
 
 
@@ -35,8 +37,8 @@ def decrease_stock() -> Response:
     """Decrease stock of product then redirect."""
     location_id: int = request.json["location_id"]
     product_id: int = request.json["product_id"]
-    ret: str = StockService.decrease_stock(location_id, product_id)
-    return make_response({"message": ret}, 200)
+    ret: Dict = StockService.decrease_stock(location_id, product_id).to_dict()
+    return make_response(ret, 200)
 
 
 @stock.route(path.DELETE_PRODUCT_FROM_STOCK_PATH, methods=[html_methods.DELETE])
@@ -44,5 +46,5 @@ def delete_from_stock() -> Response:
     """Delete product from current location stock then redirect."""
     location_id: int = request.json["location_id"]
     product_id: int = request.json["product_id"]
-    ret: str = StockService.delete_stock(location_id, product_id)
-    return make_response({"message": ret}, 200)
+    ret: Dict = StockService.delete_stock(location_id, product_id).to_dict()
+    return make_response(ret, 200)

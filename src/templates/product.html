@@ -29,7 +29,7 @@
     }
 
     async function deleteProduct(self) {
-        await axios.post('/product/delete-product', {product_id: self.id})
+        await axios.delete('/product/delete-product', {data: {product_id: self.id}})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }
