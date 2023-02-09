@@ -1,6 +1,6 @@
 from typing import List
 
-from model.model import Products, db
+from model.model import Products, session
 
 
 class ProductService:
@@ -12,17 +12,17 @@ class ProductService:
         return Products.query.all()
 
     @classmethod
-    def add_product(cls, product_name: str):
+    def add_product(cls, product_name: str) -> Products:
         """Add new product."""
         new_product: Products = Products(product_name=product_name)
-        with db.session() as session:
-            session.add(new_product)
-            session.commit()
+        session.add(new_product)
+        session.commit()
+        return new_product
 
     @classmethod
-    def delete_product(cls, product_id: str):
+    def delete_product(cls, product_id: int) -> Products:
         """Delete product."""
         del_product = Products.query.filter(Products.id == product_id).first()
-        with db.session() as session:
-            session.delete(del_product)
-            session.commit()
+        session.delete(del_product)
+        session.commit()
+        return del_product

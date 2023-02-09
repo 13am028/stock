@@ -19,7 +19,7 @@
 
 <script>
     async function addLocation() {
-        await axios.post('/location/add-location', {location: document.getElementsByName('location')[0].value})
+        await axios.post('/location/add-location', {location_name: document.getElementsByName('location')[0].value})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }

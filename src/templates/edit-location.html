@@ -3,7 +3,6 @@
 {% block content %}
 <div style="font-size: 20px; font-family: 'Apple Braille', sans-serif; color: #177199">
     <h3>Location: {{ location.location_name }}</h3>
-    <p id="{{location.id}}" style="display: none"></p>
     <img src="{{url_for('static', filename='machine.jpeg')}}" alt="vending machine" style="width: 200px">
     <form onsubmit="changeName();return false">
         <input type="text" name="location" placeholder="New Location Name">
@@ -14,15 +13,15 @@
 </div>
 
 <script>
-    const lid = document.getElementsByTagName('p')[0].id
+    const location_id = '{{location.id}}'
     async function changeName() {
-        await axios.post('/location/change-location-name', {lid: lid, location: document.getElementsByName('location')[0].value})
+        await axios.post('/location/change-location-name', {location_id: location_id, location_name: document.getElementsByName('location')[0].value})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }
 
     async function deleteLocation() {
-        await axios.post('/location/delete-location', {lid: lid})
+        await axios.post('/location/delete-location', {location_id: location_id})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }

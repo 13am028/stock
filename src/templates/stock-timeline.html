@@ -7,6 +7,7 @@
     {% endfor %}
 </select>
 <table id="location-table">
+    <caption>Stock Timeline by Location</caption>
     <thead>
     <tr>
         <th>time</th>
@@ -23,6 +24,7 @@
     {% endfor %}
 </select>
 <table id="product-table">
+    <caption>Stock Timeline by Product</caption>
     <thead>
     <tr>
         <th>time</th>
@@ -36,9 +38,9 @@
     async function loadTableDataByLocation() {
         const table = document.getElementById("location-table-body");
         table.innerHTML = ''
-        const lid = document.getElementsByName('lid')[0].value
+        const location_id = document.getElementsByName('lid')[0].value
         let timeline = []
-        await axios.post("/stock-timeline/timeline-by-location", {lid: lid}).then((response) => {
+        await axios.post("/stock-timeline/timeline-by-location", {location_id: location_id}).then((response) => {
             timeline = response.data.timeline
         })
         timeline.forEach(item => {
@@ -55,9 +57,9 @@
     async function loadTableDataByProduct() {
         const table = document.getElementById("product-table-body");
         table.innerHTML = ''
-        const pid = document.getElementsByName('pid')[0].value
+        const product_id = document.getElementsByName('pid')[0].value
         let timeline = []
-        await axios.post("/stock-timeline/timeline-by-product", {pid: pid}).then((response) => {
+        await axios.post("/stock-timeline/timeline-by-product", {product_id: product_id}).then((response) => {
             timeline = response.data.timeline
         })
         timeline.forEach(item => {

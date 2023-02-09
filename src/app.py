@@ -45,9 +45,9 @@ with app.app_context():
     db.create_all()
     db.session.commit()
     try:
-        LocationService.add_location("tests location")
-        ProductService.add_product("tests product")
-        StockService.add_product_to_stock("1", "1", "1")
+        LocationService.add_location("test location")
+        ProductService.add_product("test product")
+        StockService.add_product_to_stock(1, 1, 1)
     except SQLAlchemyError:
         pass
 
@@ -61,4 +61,4 @@ app.register_blueprint(timeline)
 
 
 if __name__ == "__main__":
-    serve(app, host="0.0.0.0", port=7778)
+    serve(app, host="0.0.0.0", port=7777)

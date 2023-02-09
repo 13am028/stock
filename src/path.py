@@ -1,12 +1,12 @@
 # location
-ALL_LOCATIONS_PATH = "/all_locations"
+ALL_LOCATIONS_PATH = "/all-locations"
 ADD_LOCATION_PATH = "/location/add-location"
 CHANGE_LOCATION_NAME_PATH = "/location/change-location-name"
 DELETE_LOCATION_PATH = "/location/delete-location"
 EDIT_LOCATION_PATH = "/location/edit-location/<location_id>"
 
 # product
-ALL_PRODUCTS_PATH = "/all_products"
+ALL_PRODUCTS_PATH = "/all-products"
 ADD_PRODUCT_PATH = "/product/add-product"
 DELETE_PRODUCT_PATH = "/product/delete-product"
 

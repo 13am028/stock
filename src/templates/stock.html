@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p id="lid" style="display: none">{{lid}}</p>
 <h2 style="font-family: 'Apple Braille', sans-serif; color: #177199">Location: <a href="{{ url_for('page.edit_location', location_id=lid) }}">{{ location }}</a></h2>
 <form onsubmit="addProduct();return false" style="font-family: 'Apple Braille', sans-serif; padding: 20px">
     <select name="pid">
@@ -28,24 +27,24 @@
 </div>
 
 <script>
-    const lid = document.getElementById('lid').innerText
+    const location_id = '{{lid}}'
 
     async function addProduct() {
-        const pid = document.getElementsByName('pid')[0].value
+        const product_id = document.getElementsByName('pid')[0].value
         const stock = document.getElementsByName('stock')[0].value
-        await axios.post('/stock/add-product-to-stock', {lid: lid, pid: pid, stock: stock})
+        await axios.post('/stock/add-product-to-stock', {location_id: location_id, product_id: product_id, stock: stock})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }
 
     async function increaseStock(self) {
-        await axios.post('/stock/increase', {lid: lid, pid: self.className})
+        await axios.post('/stock/increase', {location_id: location_id, product_id: self.className})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }
 
     async function decreaseStock(self) {
-        await axios.post('/stock/decrease', {lid: lid, pid: self.className})
+        await axios.post('/stock/decrease', {location_id: location_id, product_id: self.className})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }

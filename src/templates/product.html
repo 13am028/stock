@@ -23,13 +23,13 @@
 
 <script>
     async function addProduct() {
-        await axios.post('/product/add-product', {product: document.getElementsByName('product')[0].value})
+        await axios.post('/product/add-product', {product_name: document.getElementsByName('product')[0].value})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }
 
     async function deleteProduct(self) {
-        await axios.post('/product/delete-product', {pid: self.id})
+        await axios.post('/product/delete-product', {product_id: self.id})
         await new Promise(r => setTimeout(r, 200));
         location.reload(true)
     }

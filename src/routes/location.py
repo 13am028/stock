@@ -2,32 +2,33 @@
 from flask import Blueprint, make_response, request
 from werkzeug import Response
 
+import html_methods
 from model.locations_service import LocationService
 from path import ADD_LOCATION_PATH, CHANGE_LOCATION_NAME_PATH, DELETE_LOCATION_PATH
 
 location = Blueprint("location", __name__)
 
 
-@location.route(ADD_LOCATION_PATH, methods=["POST"])
+@location.route(ADD_LOCATION_PATH, methods=[html_methods.POST])
 def add_location() -> Response:
     """Add new location and redirect to /locations."""
-    location_name = request.json["location"]
+    location_name: str = request.json["location_name"]
     ret: str = LocationService.add_location(location_name)
     return make_response({"message": ret}, 200)
 
 
-@location.route(CHANGE_LOCATION_NAME_PATH, methods=["POST"])
-def change_loc_name() -> Response:
+@location.route(CHANGE_LOCATION_NAME_PATH, methods=[html_methods.PUT])
+def change_location_name() -> Response:
     """Change location name and redirect to /stock."""
-    lid: str = request.json["lid"]
-    location_name: str = request.json["location"]
-    ret: str = LocationService.change_location_name(lid, location_name)
+    location_id: int = request.json["location_id"]
+    location_name: str = request.json["location_name"]
+    ret: str = LocationService.change_location_name(location_id, location_name)
     return make_response({"message": ret}, 200)
 
 
-@location.route(DELETE_LOCATION_PATH, methods=["POST"])
-def delete_loc() -> Response:
+@location.route(DELETE_LOCATION_PATH, methods=[html_methods.DELETE])
+def delete_location() -> Response:
     """Delete location and redirect to /locations."""
-    lid: str = request.json["lid"]
-    ret: str = LocationService.delete_location(lid)
+    location_id: int = request.json["location_id"]
+    ret: str = LocationService.delete_location(location_id)
     return make_response({"message": ret}, 200)
