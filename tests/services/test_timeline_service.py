@@ -1,7 +1,7 @@
 from typing import List
 
 from app import app
-from model.timeline_service import TimelineService
+from services.timeline_service import TimelineService
 
 
 class TestTimelineService:

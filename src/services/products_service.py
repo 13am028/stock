@@ -1,6 +1,6 @@
 from typing import List
 
-from model.model import Products, session
+from model import Products, session
 
 
 class ProductService:

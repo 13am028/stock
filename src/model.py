@@ -1,6 +1,6 @@
 """Database."""
 import datetime
-from typing import Dict
+from typing import Dict, List
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import DateTime, ForeignKey
@@ -68,10 +68,7 @@ class StockTimeline(db.Model):
         self.location_id = location_id
         self.product_id = product_id
         self.stock = stock
-        all_product = [
-            product.id
-            for product in Stock.query.filter_by(location_id=location_id).all()
-        ]
+        all_product = [product.id for product in Stock.query.filter_by(location_id=location_id).all()]
         all_product.append(product_id)
         self.all_products = all_product
         self.date = datetime.datetime.utcnow()
@@ -79,6 +76,7 @@ class StockTimeline(db.Model):
     def get_all_product_stock(self) -> Dict:
         """Get all product names and their stocks in StockTimeline.all_products."""
         ret = {}
+        timeline = StockTimeline.query.filter(StockTimeline.date < self.date)
         for product_id in self.all_products:
             if product_id == self.product_id:
                 ret[self.product_id] = {
@@ -88,13 +86,9 @@ class StockTimeline(db.Model):
                     "stock": self.stock,
                 }
                 continue
-            timeline = (
-                StockTimeline.query.filter(StockTimeline.date < self.date)
-                .filter_by(product_id=product_id)
-                .all()
-            )
-            if len(timeline) > 0:
-                product = timeline[-1]
+            product_timeline = timeline.filter(StockTimeline.product_id == product_id).all()
+            if len(product_timeline) > 0:
+                product = product_timeline[-1]
                 ret[product.product_id] = {
                     "product_name": Products.query.filter_by(id=product.product_id)
                     .first()

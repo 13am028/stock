@@ -4,7 +4,7 @@ import string
 
 import path
 from app import app
-from model.locations_service import LocationService
+from services.locations_service import LocationService
 
 content_type_json = "application/json"
 client = app.test_client()

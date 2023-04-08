@@ -1,6 +1,6 @@
 from typing import List
 
-from model.model import Locations, session
+from model import Locations, session
 
 
 class LocationService:

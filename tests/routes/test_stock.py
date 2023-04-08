@@ -3,10 +3,10 @@ from typing import Any, List
 
 import path
 from app import app
-from model.locations_service import LocationService
-from model.model import Products, Stock, db
-from model.products_service import ProductService
-from model.stock_service import StockService
+from services.locations_service import LocationService
+from model import Products, Stock, db
+from services.products_service import ProductService
+from services.stock_service import StockService
 
 content_type_json = "application/json"
 

@@ -5,10 +5,10 @@ from flask import Blueprint, render_template
 
 import html_methods
 import path
-from model.locations_service import LocationService
-from model.model import Locations, Products
-from model.products_service import ProductService
-from model.stock_service import StockService
+from services.locations_service import LocationService
+from model import Locations, Products
+from services.products_service import ProductService
+from services.stock_service import StockService
 
 page = Blueprint("page", __name__)
 

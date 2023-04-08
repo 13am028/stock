@@ -1,9 +1,7 @@
 from typing import Any, List
 
-from model.model import Products, Stock, session
-from model.timeline_service import TimelineService
-
-product_not_found = "Product Not Found !"
+from model import Products, Stock, session
+from services.timeline_service import TimelineService
 
 
 class StockService:
@@ -19,25 +17,20 @@ class StockService:
         )
 
     @classmethod
-    def add_product_to_stock(
-        cls, location_id: int, product_id: int, stock: int
-    ) -> Stock:
+    def add_product_to_stock(cls, location_id: int, product_id: int, stock: int) -> Stock:
         """Add product to stock. If it already exists, change the number of stock."""
-        new_stock: Stock = Stock(
-            location_id=location_id, product_id=product_id, stock=stock
-        )
-        products_in_stock: List[Stock] = Stock.query.filter(
-            Stock.location_id == location_id
-        ).all()
         TimelineService.add_to_timeline(location_id, product_id, stock)
-        for product in products_in_stock:
-            if product_id == product.product_id:
-                product.stock = stock
-                session.commit()
-                return product
-        session.add(new_stock)
-        session.commit()
-        return new_stock
+        product_in_stock: Stock = Stock.query.filter(Stock.location_id == location_id).filter(
+            Stock.product_id == product_id).first()
+        if product_in_stock is not None:
+            product_in_stock.stock = stock
+            session.commit()
+            return product_in_stock
+        else:
+            new_stock: Stock = Stock(location_id=location_id, product_id=product_id, stock=stock)
+            session.add(new_stock)
+            session.commit()
+            return new_stock
 
     @classmethod
     def increase_stock(cls, location_id: int, product_id: int) -> Stock:

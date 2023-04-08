@@ -5,7 +5,7 @@ from flask import Blueprint, Response, make_response, request
 
 import html_methods
 import path
-from model.stock_service import StockService
+from services.stock_service import StockService
 
 stock = Blueprint("stock", __name__)
 stock_page = "page.stock"

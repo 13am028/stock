@@ -3,8 +3,8 @@ from typing import List
 from flask import Blueprint, Response, jsonify, make_response, request
 
 import html_methods
-from model.model import StockTimeline
-from model.timeline_service import TimelineService
+from model import StockTimeline
+from services.timeline_service import TimelineService
 from path import GET_TIMELINE_BY_LOCATION, GET_TIMELINE_BY_PRODUCT
 
 timeline = Blueprint("timeline", __name__)

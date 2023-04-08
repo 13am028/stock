@@ -3,9 +3,9 @@ import string
 from typing import List
 
 from app import app
-from model.model import Stock
-from model.products_service import ProductService
-from model.stock_service import StockService
+from model import Stock
+from services.products_service import ProductService
+from services.stock_service import StockService
 
 
 def get_random_string(length: int) -> str:

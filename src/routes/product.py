@@ -4,7 +4,7 @@ from typing import Dict
 from flask import Blueprint, Response, make_response, request
 
 import html_methods
-from model.products_service import ProductService
+from services.products_service import ProductService
 from path import ADD_PRODUCT_PATH, DELETE_PRODUCT_PATH
 
 product = Blueprint("product", __name__)

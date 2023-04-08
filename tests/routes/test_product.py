@@ -4,8 +4,8 @@ import string
 
 import path
 from app import app
-from model.model import Stock, StockTimeline
-from model.products_service import ProductService
+from model import Stock, StockTimeline
+from services.products_service import ProductService
 
 
 def get_random_string(length: int) -> str:

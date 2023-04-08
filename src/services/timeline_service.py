@@ -1,13 +1,13 @@
 from typing import List
 
-from model.model import StockTimeline, session
+from model import StockTimeline, session
 
 
 class TimelineService:
     """Class containing methods for Timeline."""
 
     @classmethod
-    def add_to_timeline(cls, location_id: int, product_id: int, stock: int) -> str:
+    def add_to_timeline(cls, location_id: int, product_id: int, stock: int) -> StockTimeline:
         """Add product stock to timeline given location_id product_id."""
         new_stock_time: StockTimeline = StockTimeline(
             location_id=location_id,
@@ -16,6 +16,7 @@ class TimelineService:
         )
         session.add(new_stock_time)
         session.commit()
+        return new_stock_time
 
     @classmethod
     def get_timeline_by_location_id(cls, location_id: int) -> List[StockTimeline]:

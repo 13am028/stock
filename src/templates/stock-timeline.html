@@ -18,6 +18,8 @@
     <tbody id="location-table-body"></tbody>
 </table>
 
+<div style="padding: 30px">&nbsp;</div>
+
 <select name="pid" onchange="loadTableDataByProduct()">
     {% for product in products %}
     <option value="{{ product.id }}">{{ product.product_name }}</option>
@@ -41,7 +43,7 @@
         const location_id = document.getElementsByName('lid')[0].value
         let timeline = []
         await axios.post("/stock-timeline/timeline-by-location", {location_id: location_id}).then((response) => {
-            timeline = response.data.timeline
+            timeline = response.data
         })
         timeline.forEach(item => {
             let row = table.insertRow();
@@ -60,7 +62,7 @@
         const product_id = document.getElementsByName('pid')[0].value
         let timeline = []
         await axios.post("/stock-timeline/timeline-by-product", {product_id: product_id}).then((response) => {
-            timeline = response.data.timeline
+            timeline = response.data
         })
         timeline.forEach(item => {
             let row = table.insertRow();

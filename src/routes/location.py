@@ -5,7 +5,7 @@ from flask import Blueprint, make_response, request
 from werkzeug import Response
 
 import html_methods
-from model.locations_service import LocationService
+from services.locations_service import LocationService
 from path import ADD_LOCATION_PATH, CHANGE_LOCATION_NAME_PATH, DELETE_LOCATION_PATH
 
 location = Blueprint("location", __name__)

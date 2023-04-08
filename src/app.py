@@ -7,10 +7,10 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy_utils import create_database, database_exists
 from waitress import serve
 
-from model.locations_service import LocationService
-from model.model import db
-from model.products_service import ProductService
-from model.stock_service import StockService
+from services.locations_service import LocationService
+from model import db
+from services.products_service import ProductService
+from services.stock_service import StockService
 from routes.location import location
 from routes.pages import page
 from routes.product import product

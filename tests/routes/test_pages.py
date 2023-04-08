@@ -1,6 +1,6 @@
 import path
 from app import app
-from model.locations_service import LocationService
+from services.locations_service import LocationService
 
 
 def get_lid() -> str:

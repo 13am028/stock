@@ -3,8 +3,8 @@ import string
 from typing import List
 
 from app import app
-from model.model import Products
-from model.products_service import ProductService
+from model import Products
+from services.products_service import ProductService
 
 
 def get_random_string(length: int) -> str:
