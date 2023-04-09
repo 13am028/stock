@@ -1,6 +1,6 @@
 """Database."""
 import datetime
-from typing import Dict, List
+from typing import Dict
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import DateTime, ForeignKey
@@ -68,7 +68,10 @@ class StockTimeline(db.Model):
         self.location_id = location_id
         self.product_id = product_id
         self.stock = stock
-        all_product = [product.id for product in Stock.query.filter_by(location_id=location_id).all()]
+        all_product = [
+            product.id
+            for product in Stock.query.filter_by(location_id=location_id).all()
+        ]
         all_product.append(product_id)
         self.all_products = all_product
         self.date = datetime.datetime.utcnow()
@@ -86,7 +89,9 @@ class StockTimeline(db.Model):
                     "stock": self.stock,
                 }
                 continue
-            product_timeline = timeline.filter(StockTimeline.product_id == product_id).all()
+            product_timeline = timeline.filter(
+                StockTimeline.product_id == product_id
+            ).all()
             if len(product_timeline) > 0:
                 product = product_timeline[-1]
                 ret[product.product_id] = {

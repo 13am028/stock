@@ -17,17 +17,24 @@ class StockService:
         )
 
     @classmethod
-    def add_product_to_stock(cls, location_id: int, product_id: int, stock: int) -> Stock:
+    def add_product_to_stock(
+        cls, location_id: int, product_id: int, stock: int
+    ) -> Stock:
         """Add product to stock. If it already exists, change the number of stock."""
         TimelineService.add_to_timeline(location_id, product_id, stock)
-        product_in_stock: Stock = Stock.query.filter(Stock.location_id == location_id).filter(
-            Stock.product_id == product_id).first()
+        product_in_stock: Stock = (
+            Stock.query.filter(Stock.location_id == location_id)
+            .filter(Stock.product_id == product_id)
+            .first()
+        )
         if product_in_stock is not None:
             product_in_stock.stock = stock
             session.commit()
             return product_in_stock
         else:
-            new_stock: Stock = Stock(location_id=location_id, product_id=product_id, stock=stock)
+            new_stock: Stock = Stock(
+                location_id=location_id, product_id=product_id, stock=stock
+            )
             session.add(new_stock)
             session.commit()
             return new_stock

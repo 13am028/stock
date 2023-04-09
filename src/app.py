@@ -7,15 +7,15 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy_utils import create_database, database_exists
 from waitress import serve
 
-from services.locations_service import LocationService
 from model import db
-from services.products_service import ProductService
-from services.stock_service import StockService
 from routes.location import location
 from routes.pages import page
 from routes.product import product
 from routes.stock import stock
 from routes.timeline import timeline
+from services.locations_service import LocationService
+from services.products_service import ProductService
+from services.stock_service import StockService
 
 url = (
     "postgresql://"

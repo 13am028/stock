@@ -5,8 +5,8 @@ from flask import Blueprint, render_template
 
 import html_methods
 import path
-from services.locations_service import LocationService
 from model import Locations, Products
+from services.locations_service import LocationService
 from services.products_service import ProductService
 from services.stock_service import StockService
 

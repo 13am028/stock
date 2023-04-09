@@ -3,8 +3,8 @@ from typing import Any, List
 
 import path
 from app import app
-from services.locations_service import LocationService
 from model import Products, Stock, db
+from services.locations_service import LocationService
 from services.products_service import ProductService
 from services.stock_service import StockService
 

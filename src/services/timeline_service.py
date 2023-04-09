@@ -7,7 +7,9 @@ class TimelineService:
     """Class containing methods for Timeline."""
 
     @classmethod
-    def add_to_timeline(cls, location_id: int, product_id: int, stock: int) -> StockTimeline:
+    def add_to_timeline(
+        cls, location_id: int, product_id: int, stock: int
+    ) -> StockTimeline:
         """Add product stock to timeline given location_id product_id."""
         new_stock_time: StockTimeline = StockTimeline(
             location_id=location_id,
